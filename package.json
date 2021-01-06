@@ -8,7 +8,8 @@
     "@rails/webpacker": "4.3.0",
     "vue": "^2.6.12",
     "vue-loader": "^15.9.6",
-    "vue-template-compiler": "^2.6.12"
+    "vue-template-compiler": "^2.6.12",
+    "vuetify": "^2.4.1"
   },
   "version": "0.1.0",
   "devDependencies": {
