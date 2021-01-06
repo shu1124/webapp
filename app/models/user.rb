@@ -12,4 +12,16 @@ class User < ApplicationRecord
 
   scope :by_name, ->(name) { where('name LIKE ?', "%#{name}%") }
   scope :by_tag, ->(tag_ids) { joins(:user_tags).where(user_tags: { tag_id: tag_ids }) }
+
+  def save_with_tags!(tag_names:)
+    return save! if tag_names.nil? # blank?だと削除ができない
+
+    ActiveRecord::Base.transaction do
+      self.tags = tag_names.map { |name| Tag.find_or_initialize_by(name: name) }
+      save!
+    end
+    true
+  rescue StandardError => e
+    false
+  end
 end
