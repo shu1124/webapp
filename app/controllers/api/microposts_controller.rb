@@ -1,8 +1,11 @@
 class Api::MicropostsController < ApplicationController
   before_action :authenticate, only: %i[create update destroy]
+  PER_PAGE = 10
   def index
-    microposts = Micropost.includes(:user).order(created_at: :desc)
-    render json: microposts, each_serializer: MicropostSerializer
+    microposts = Micropost.includes(:user).order(created_at: :desc).page(params[:page]).per(PER_PAGE)
+    render json: microposts, each_serializer: MicropostSerializer, meta: { total_pages: microposts.total_pages,
+                                                                           total_count: microposts.total_count,
+                                                                           current_page: microposts.current_page }
   end
 
   def create
