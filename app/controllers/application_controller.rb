@@ -2,6 +2,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :null_session
   class AuthenticationError < StandardError; end
 
+  rescue_from ActiveRecord::RecordNotFound, with: :render_404
   rescue_from ActiveRecord::RecordInvalid, with: :render_422
   rescue_from AuthenticationError, with: :not_authenticated
 
@@ -15,6 +16,10 @@ class ApplicationController < ActionController::Base
 
   private
 
+  def render_404(exception)
+    render json: { error: { messages: exception.message } }, status: :not_found
+  end
+  
   def render_422(exception)
     render json: { error: { messages: exception.record.errors.full_messages } }, status: :unprocessable_entity
   end
