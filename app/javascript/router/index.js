@@ -15,7 +15,7 @@ const router = new VueRouter({
         { path: '/', component: PageTimeline, name: 'timeline' },
         { path: '/microposts', component: PageTimeline },
         { path: '/microposts/:id', component: PageMicropostDetail, name: 'micropost-detail' },
-        { path: '/profile', component: PageProfile, name: 'user-profile' },
+        { path: '/profile', component: PageProfile, name: 'my-profile' },
         { path: '/users/:id', component: PageProfile, name: 'user-profile' },
         { path: '/users', component: PageUsers, name: 'users' },
     ]
