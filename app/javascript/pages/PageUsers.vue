@@ -86,7 +86,7 @@
         </v-card>
       </v-col>
     </v-row>
-    <v-row justify="center">
+    <v-row justify="center" class="pb-10">
       <template v-if="pagingMeta">
         <div class="text-center">
           <v-pagination
