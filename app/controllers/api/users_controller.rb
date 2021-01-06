@@ -5,6 +5,11 @@ class Api::UsersController < ApplicationController
     render json: user, serializer: UserSerializer
   end
 
+  def show
+    user = User.find(params[:id])
+    render json: user, serializer: UserSerializer
+  end
+
   private
 
   def user_params

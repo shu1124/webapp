@@ -42,6 +42,8 @@ GEM
       activemodel (>= 4.1, < 6.2)
       case_transform (>= 0.2)
       jsonapi-renderer (>= 0.1.1.beta1, < 0.3)
+    active_storage_base64 (1.1.0)
+      rails (~> 6.0)
     activejob (6.0.3.4)
       activesupport (= 6.0.3.4)
       globalid (>= 0.3.6)
@@ -206,6 +208,7 @@ PLATFORMS
 
 DEPENDENCIES
   active_model_serializers (~> 0.10.0)
+  active_storage_base64
   bcrypt (~> 3.1.7)
   bootsnap (>= 1.4.2)
   byebug
