@@ -1,4 +1,12 @@
 class Api::UsersController < ApplicationController
+  PER_PAGE = 12
+  def index
+    users = User.order(created_at: :desc).page(params[:page]).per(PER_PAGE)
+    render json: users, each_serializer: UserSerializer, meta: { total_pages: users.total_pages,
+                                                                           total_count: users.total_count,
+                                                                           current_page: users.current_page }
+  end
+  
   def create
     user = User.new(user_params)
     user.save!
