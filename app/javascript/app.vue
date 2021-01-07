@@ -59,7 +59,7 @@
      <v-app-bar
       app
       shrink-on-scroll
-      color="blue-grey lighten-2"
+      color="blue-grey"
       dark
     >
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
