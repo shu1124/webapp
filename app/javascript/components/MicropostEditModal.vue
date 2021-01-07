@@ -49,7 +49,7 @@
         },
         computed: {
             isValid() {
-                return this.micropostContent.length > 0 && this.micropostContent.length <= 140
+                return this.micropostContent.length > 0 && this.micropostContent.length <= 1000
             }
         },
         methods: {

@@ -2,14 +2,14 @@ class Api::CommentsController < ApplicationController
 
   def index
     comments = Comment.where(micropost_id: params[:micropost_id]).order("id DESC")
-    render json: comments
+    render json: comments, each_serializer: CommentSerializer
   end
 
   def create
     comment = Comment.new(comment_params)
     comment.user_id = current_user.id
     if comment.save
-      render json: comment
+      render json: comment, serializer: CommentSerializer
     else
       render json: comment.errors, status: 422
     end

@@ -3,7 +3,9 @@ Rails.application.routes.draw do
   namespace :api do
     resources :users, only: %i[index create show]
     resource :session, only: %i[create destroy]
-    resources :microposts, only: %i[index create show update destroy]
+    resources :microposts, only: %i[index create show update destroy] do
+      resources :comments, only: [:create, :index]
+    end
     resources :tags, only: %i[index]
     namespace :me do
       resource :account, only: %i[update]
