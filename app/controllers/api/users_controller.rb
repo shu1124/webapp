@@ -19,6 +19,18 @@ class Api::UsersController < ApplicationController
     render json: user, serializer: UserSerializer
   end
 
+  def following
+    user  = User.find(params[:id])
+    users = @user.following
+    render json: users, serializer: UserSerializer
+  end
+
+  def followers
+      @user  = User.find(params[:id])
+      @users = @user.followers
+      render json: users, serializer: UserSerializer
+  end
+
   private
 
   def user_params
