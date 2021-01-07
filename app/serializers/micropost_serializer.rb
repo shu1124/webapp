@@ -1,5 +1,5 @@
 class MicropostSerializer < ActiveModel::Serializer
-  attributes :id, :content, :title, :time, :created_at, :updated_at, image_url
+  attributes :id, :content, :title, :time, :created_at, :updated_at, :image_url
   belongs_to :user
 
   def image_url

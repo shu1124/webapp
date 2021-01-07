@@ -29,6 +29,14 @@
             <v-list-item-title>プロフィール</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+        <v-list-item :to="`/micropost`" link v-if="$store.getters['auth/currentUser']">
+          <v-list-item-action>
+            <v-icon>mdi-comment</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>投稿する</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
         <v-list-item link v-if="$store.getters['auth/currentUser']">
           <v-list-item-action>
             <v-icon>mdi-logout</v-icon>
