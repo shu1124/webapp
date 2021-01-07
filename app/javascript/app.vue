@@ -48,13 +48,21 @@
       </v-list>
     </v-navigation-drawer>
 
-    <v-app-bar
-            app
-            color="indigo"
-            dark
+     <v-app-bar
+      app
+      shrink-on-scroll
+      color="blue-grey lighten-2"
+      dark
     >
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+
       <v-toolbar-title>Application</v-toolbar-title>
+
+      <v-spacer></v-spacer>
+
+      <v-btn icon>
+        <v-icon>mdi-dots-vertical</v-icon>
+      </v-btn>
     </v-app-bar>
 
     <v-main>
@@ -73,10 +81,10 @@
       </v-container>
     </v-main>
     <v-footer
-            color="indigo"
+            color="blue-grey lighten-2"
             app
     >
-      <span class="white--text">&copy; 2019</span>
+      <span class="white--text">&copy; 2021</span>
     </v-footer>
   </v-app>
 </template>
