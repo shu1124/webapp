@@ -5,6 +5,7 @@ Rails.application.routes.draw do
     resource :session, only: %i[create destroy]
     resources :microposts, only: %i[index create show update destroy] do
       resources :comments, only: [:create, :index]
+      resources :likes, only: [:index, :create, :destroy]
     end
     resources :tags, only: %i[index]
     namespace :me do
