@@ -32,7 +32,6 @@
 </template>
 
 <script>
-    import MicropostForm from '@/components/MicropostForm'
     export default {
         props: {
             micropost: {
@@ -47,9 +46,6 @@
         },
         created() {
             this.micropostContent = this.micropost.content
-        },
-        components: {
-            MicropostForm
         },
         computed: {
             isValid() {
