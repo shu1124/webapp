@@ -26,7 +26,7 @@
           </v-card-subtitle>
           <v-card-text class="text--primary">
             <v-list-item-subtitle style="white-space: pre-line">
-              タイトル: {{ micropost.content }}
+              タイトル: {{ micropost.title }}
               勉強時間： {{ micropost.time}} h
             </v-list-item-subtitle>
           </v-card-text>
