@@ -9,6 +9,8 @@ class User < ApplicationRecord
   has_many :user_tags, dependent: :destroy
   has_many :tags, through: :user_tags
   has_many :comments
+  has_many :likes, dependent: :destroy
+  has_many :liked_posts, through: :likes, source: :micropost
 
   scope :by_name, ->(name) { where('name LIKE ?', "%#{name}%") }
   scope :by_tag, ->(tag_ids) { joins(:user_tags).where(user_tags: { tag_id: tag_ids }) }

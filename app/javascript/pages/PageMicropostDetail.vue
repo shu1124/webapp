@@ -132,7 +132,6 @@
 <script>
 import axios from 'axios'
 import MicropostEditModal from '@/components/MicropostEditModal'
-import CommentForm from '@/components/CommentForm'
 export default {
     data() {
         return {
@@ -143,7 +142,6 @@ export default {
     },
     components: {
         MicropostEditModal,
-        CommentForm
 
     },
     created() {

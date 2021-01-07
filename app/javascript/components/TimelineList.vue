@@ -30,12 +30,18 @@
               勉強時間： {{ micropost.time}} h
             </v-list-item-subtitle>
           </v-card-text>
+          <v-card-actions>
+              <v-btn icon>
+                <like-button :user-id="micropost.user.id" :micropost-id="micropost.id"></like-button>
+              </v-btn>
+          </v-card-actions>
         </v-card>
       </v-col>
    </v-row>
 </template>
 
 <script>
+import LikeButton from '@/components/LikeButton'
     export default {
         props: {
             microposts: {
@@ -43,5 +49,8 @@
                 default: []
             }
         },
+        components: {
+            LikeButton
+        }
     }
 </script>
