@@ -8,12 +8,14 @@
         Where do you live?
       </v-subheader>
       <v-file-input
-        label="画像を添付"
+        label="image"
         filled
         prepend-icon="mdi-camera"
         accept="image/png,image/jpeg"
         id="image" 
         name="image"
+        type="file"
+        @change="setImage"
       ></v-file-input>
       <v-row>
         <v-col
@@ -65,38 +67,40 @@
 </template>
 
 <script>
-export default  {
-    data() {
-        return {
-            content: "",
-            title: "",
-            time: "",
-            imageFile: null
-        }
+import { mapActions } from "vuex";
+
+export default {
+  name: "MicropostForm",
+  data: () => ({
+    content: "",
+    title: "",
+    time: "",
+    imageFile: null
+  }),
+  methods: {
+    ...mapActions("microposts", ["createPost"]),
+    setImage(e) {
+      this.imageFile = e;
     },
-    computed: {
-        isValid() {
-            return this.micropostContent.length > 0 && this.micropostContent.length <= 140
-        }
-    },
-    methods: {
-      async upload() {
-        let formData = new FormData();
-        formData.append("content", this.content);
-        formData.append("title", this.title);
-        formData.append("time", this.time);
-        if (this.imageFile !== null) {
-          formData.append("image", this.imageFile);
-        }
-        await this.$store.dispatch("microposts/createPost", formData)
-        this.resetForm();
-      },
-      resetForm() {
-        this.content = "";
-        this.title = "";
-        this.time = "";
-        this.imageFile = null;
+    async upload() {
+      let formData = new FormData();
+      formData.append("content", this.content);
+      formData.append("title", this.title);
+      formData.append("time", this.time);
+      if (this.imageFile !== null) {
+        formData.append("image", this.imageFile);
       }
+      this.createPost(formData);
+      this.resetForm();
+    },
+    resetForm() {
+      this.content = "";
+      this.title = "";
+      this.time = "";
+      this.image = ""
+      this.imageFile = null;
+    }
   }
-}
+};
 </script>
+
