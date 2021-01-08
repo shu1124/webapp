@@ -26,7 +26,7 @@ export default {
        return this.likeList.length
      },
      isLiked() {
-       if (this.likeList.length === 0) { return false }
+      if (this.likeList.length === 0) { return false }
        return Boolean(this.findLikeId())
      }
    },

@@ -35,6 +35,7 @@
             <v-btn v-if="isMe" class="ma-2" tile outlined color="success" @click="$refs.dialog.open()">
               <v-icon left>mdi-pencil</v-icon> プロフィール編集
             </v-btn>
+            <follow-button v-if="isLogine" class="ma-2" tile outlined color="success" :user-id="user.id"></follow-button>
           </v-card-title>
 
           <v-list>
@@ -108,8 +109,9 @@
 
 <script>
   import axios from 'axios'
-  import ProfileEditModal from "../components/ProfileEditModal";
-  import AvatarUpload from "../components/AvatarUpload";
+  import ProfileEditModal from "@/components/ProfileEditModal";
+  import AvatarUpload from "@/components/AvatarUpload";
+  import FollowButton from "@/components/FollowButton";
   export default {
       data() {
           return {
@@ -118,11 +120,15 @@
       },
       components: {
           ProfileEditModal,
-          AvatarUpload
+          AvatarUpload,
+          FollowButton
       },
       computed: {
           isMe() {
               return this.$store.getters['auth/currentUser'] && this.userId == this.$store.getters['auth/currentUser'].id
+          },
+          isLogine() {
+              return this.$store.getters['auth/currentUser'] && this.userId == !!this.$store.getters['auth/currentUser'].id
           },
           userId() {
               return this.$route.params.id || this.$store.getters['auth/currentUser'].id

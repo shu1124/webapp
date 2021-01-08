@@ -89,7 +89,7 @@
       </v-container>
     </v-main>
     <v-footer
-            color="blue-grey lighten-2"
+            color="blue-grey"
             app
     >
       <span class="white--text">&copy; 2021</span>

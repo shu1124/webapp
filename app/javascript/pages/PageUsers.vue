@@ -37,8 +37,7 @@
       >
         <v-card>
           <v-img
-                  :src="`http://placeimg.com/300/300/people?dummy=${user.id}`"
-                  :lazy-src="`https://picsum.photos/10/6?dummy=${user.id}`"
+                  :src="user.avatar_url"
                   class="white--text align-end"
                   gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
                   aspect-ratio="1"
