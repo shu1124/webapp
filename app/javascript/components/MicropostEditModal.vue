@@ -2,36 +2,101 @@
     <v-row justify="center">
         <v-dialog v-model="dialog" max-width="600px">
             <v-card>
-                <v-card-title>
-                    <span class="headline">Edit Micropost</span>
-                </v-card-title>
-                <v-card-text>
-                    <v-container>
-                        <v-row>
-                            <v-col cols="12">
-                                <v-textarea
-                                        outlined
-                                        color="indigo"
-                                        name="input-7-4"
-                                        label="投稿"
-                                        v-model="micropostContent"
-                                        prepend-icon="mdi-comment"
-                                ></v-textarea>
-                            </v-col>
-                        </v-row>
-                    </v-container>
-                </v-card-text>
-                <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="indigo" text @click="close">キャンセル</v-btn>
-                    <v-btn :dark="isValid" color="indigo" :disabled="!isValid" @click="update">更新</v-btn>
-                </v-card-actions>
-            </v-card>
-        </v-dialog>
-    </v-row>
+    <v-card-title class="headline font-weight-regular blue-grey white--text">
+      投稿する
+    </v-card-title>
+    <v-card-text>
+      <v-subheader class="pa-0">
+        Where do you live?
+      </v-subheader>
+      <!-- <v-file-input
+        label="image"
+        filled
+        prepend-icon="mdi-camera"
+        accept="image/png,image/jpeg"
+        id="image" 
+        name="image"
+        type="file"
+        @change="setImage"
+      ></v-file-input> -->
+      <v-row>
+        <v-col
+          cols="12"
+          sm="6"
+        >
+          <v-text-field
+            label="タイトル"
+            placeholder="タイトル"
+            outlined
+            prepend-icon="mdi-format-title"
+            v-model="micropostTitle"
+          ></v-text-field>
+        </v-col>
+
+        <v-col
+          cols="12"
+          sm="6"
+        >
+          <v-text-field
+            label="勉強した時間"
+            placeholder="勉強した時間"
+            outlined
+            prepend-icon="mdi-clock-outline"
+            v-model="micropostTime"
+          ></v-text-field>
+        </v-col>
+      </v-row>
+      <v-textarea
+                outlined
+                color="indigo"
+                name="input-7-4"
+                label="投稿"
+                v-model="micropostContent"
+                prepend-icon="mdi-comment"
+      >
+      </v-textarea>
+      <v-col cols="12">
+                <template>
+                  <v-container fluid>
+                    <v-combobox
+                            v-model="selectedGenres"
+                            :items="genres"
+                            :search-input.sync="search"
+                            hide-selected
+                            hint="最大5つまで登録できます"
+                            label="Add some genres"
+                            multiple
+                            persistent-hint
+                            small-chips
+                            :clearable="true"
+                            :deletable-chips="true"
+                    >
+                      <template v-slot:no-data>
+                        <v-list-item>
+                          <v-list-item-content>
+                            <v-list-item-title>
+                              タグ"<strong>{{ search }}</strong>"はまだ登録されていません。<kbd>enter</kbd>で登録できます。
+                            </v-list-item-title>
+                          </v-list-item-content>
+                        </v-list-item>
+                      </template>
+                    </v-combobox>
+                  </v-container>
+                </template>
+              </v-col>
+      <v-card-actions>
+        <v-spacer></v-spacer>
+        <v-btn color="indigo" text @click="close">キャンセル</v-btn>
+        <v-btn :dark="isValid" color="indigo" :disabled="!isValid" @click="update">更新</v-btn>
+      </v-card-actions>
+    </v-card-text>
+  </v-card>
+</v-dialog>
+</v-row>
 </template>
 
 <script>
+import axios from 'axios'
     export default {
         props: {
             micropost: {
@@ -41,11 +106,20 @@
         data() {
             return {
                 dialog: false,
-                micropostContent: null
+                selectedGenres: [],
+                search: null,
+                genres: []
             }
         },
         created() {
             this.micropostContent = this.micropost.content
+            this.micropostTitle = this.micropost.title
+            this.micropostTime = this.micropost.time
+
+            this.selectedGenres = this.micropost.genres.map((genre) => {
+                return genre.name
+            })
+            this.fetchGenres()
         },
         computed: {
             isValid() {
@@ -53,15 +127,63 @@
             }
         },
         methods: {
+            setImage(e) {
+                this.imageFile = e;
+            },
             open() {
                 this.dialog = true;
             },
             close() {
                 this.dialog = false;
             },
-            update() {
-                this.$emit('update', this.micropostContent)
+            async update() {
+              const micropostParams = {
+                    micropost: {
+                        content: this.micropostContent,
+                        title: this.micropostTitle,
+                        time: this.micropostTime,
+                        genre_names: this.selectedGenres
+                    }
+                }
+              this.$emit('update', micropostParams)
+            },
+            // async update() {
+            //   const genre_names = this.selectedGenres
+            //   let formData = new FormData();
+            //   formData.append("content", this.micropostContent);
+            //   formData.append("title", this.micropostTitle);
+            //   formData.append("time", this.micropostTime);
+            //   formData.append("genre_names", this.genre_names);
+            //     if (this.imageFile !== null) {
+            //       formData.append("image", this.imageFile);
+            //     }
+            //   this.$emit('update', formData)
+            // },
+            //  async updateProfile() {
+            //     const userParams = {
+            //         user: {
+            //             name: this.user.name,
+            //             introduction: this.user.introduction,
+            //             tag_names: this.selectedTags
+            //         }
+            //     }
+            //     await this.$store.dispatch('auth/updateProfile', userParams)
+            //     this.close()
+            // },
+            async fetchGenres() {
+                const res = await axios.get(`/api/genres`)
+                this.genres = res.data.genres.map((genre) => {
+                    return genre.name
+                })
             }
-        }
+        },
+        watch: {
+            selectedGenres (val) {
+                if (val.length > 5) {
+                    this.$nextTick(() => this.selectedGenres.pop())
+                }
+            },
+        },
+
     }
 </script>

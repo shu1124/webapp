@@ -13,6 +13,7 @@ Rails.application.routes.draw do
       resources :likes, only: [:index, :create, :destroy]
     end
     resources :tags, only: %i[index]
+    resources :genres, only: %i[index]
     namespace :me do
       resource :account, only: %i[update]
     end

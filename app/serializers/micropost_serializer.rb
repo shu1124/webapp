@@ -1,6 +1,7 @@
 class MicropostSerializer < ActiveModel::Serializer
   attributes :id, :content, :title, :time, :created_at, :updated_at, :image_url
   belongs_to :user
+  has_many :genres
 
   def image_url
     if object.image.attached?

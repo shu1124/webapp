@@ -9,4 +9,22 @@ class Micropost < ApplicationRecord
   validates :title, presence: true, length: { maximum: 30 }
   validates :time, presence: true
 
+
+  has_many :micropost_genres, dependent: :destroy
+  has_many :genres, through: :micropost_genres
+
+  scope :by_name, ->(name) { where('name LIKE ?', "%#{name}%") }
+  scope :by_genre, ->(genre_ids) { joins(:micropost_genres).where(micropost_genres: { genre_id: genres_ids }) }
+
+  def save_with_genres!(genre_names:)
+    return save! if genre_names.nil?
+
+    ActiveRecord::Base.transaction do
+      self.genres = genre_names.map { |name| Genre.find_or_initialize_by(name: name) }
+      save!
+    end
+    true
+  rescue StandardError => e
+    false
+  end
 end
