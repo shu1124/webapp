@@ -1,9 +1,11 @@
-const { environment } = require('@rails/webpacker')
-const { VueLoaderPlugin } = require('vue-loader')
-const vue = require('./loaders/vue')
-const aliasConfig = require('./alias')
+import { environment } from '@rails/webpacker';
+import { VueLoaderPlugin } from 'vue-loader';
+import vue from './loaders/vue';
+import eslint from './loaders/eslint';
+import aliasConfig from './alias';
 
-environment.plugins.prepend('VueLoaderPlugin', new VueLoaderPlugin())
-environment.loaders.prepend('vue', vue)
-environment.config.merge(aliasConfig)
-module.exports = environment
+environment.plugins.prepend('VueLoaderPlugin', new VueLoaderPlugin());
+environment.loaders.prepend('vue', vue);
+environment.loaders.append('eslint', eslint);
+environment.config.merge(aliasConfig);
+export default environment;
