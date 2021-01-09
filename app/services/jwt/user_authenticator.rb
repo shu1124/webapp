@@ -12,6 +12,7 @@ module Jwt::UserAuthenticator
   end
 
   private
+
   def token
     @request_headers['Authorization'].split(' ').last
   end

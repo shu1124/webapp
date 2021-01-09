@@ -4,8 +4,8 @@ class Api::UsersController < ApplicationController
     search_users_form = SearchUsersForm.new(search_params)
     users = search_users_form.search.order(created_at: :desc).page(params[:page]).per(PER_PAGE)
     render json: users, each_serializer: UserSerializer, meta: { total_pages: users.total_pages,
-                                                                           total_count: users.total_count,
-                                                                           current_page: users.current_page }
+                                                                 total_count: users.total_count,
+                                                                 current_page: users.current_page }
   end
 
   def create

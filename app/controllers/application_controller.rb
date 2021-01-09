@@ -19,7 +19,7 @@ class ApplicationController < ActionController::Base
   def render_404(exception)
     render json: { error: { messages: exception.message } }, status: :not_found
   end
-  
+
   def render_422(exception)
     render json: { error: { messages: exception.record.errors.full_messages } }, status: :unprocessable_entity
   end
