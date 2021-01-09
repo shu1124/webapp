@@ -21,6 +21,15 @@
           <div class="display-1 pl-12 pt-12">
             {{ micropost.title }}
           </div>
+          <div v-if="isMine" class="d-flex">
+            <v-btn fab small dark color="teal" @click="openEditMicropost" class="mx-2">
+                <v-icon>mdi-pen</v-icon>
+            </v-btn>
+            <v-btn fab small dark color="error" @click="deleteMicropost" class="mx-2">
+                <v-icon>mdi-delete</v-icon>
+            </v-btn>
+            <micropost-edit-modal v-if="isMine" ref="dialog" :micropost="micropost" @update="updateMicropost"></micropost-edit-modal>
+        </div>
         </v-card-title>
       </v-row>
     </v-img>
@@ -165,10 +174,9 @@ export default {
         openEditMicropost() {
             this.$refs.dialog.open()
         },
-        async updateMicropost(micropostContent) {
-            await axios.patch(`/api/microposts/${this.micropostId}`, { micropost: { content: micropostContent } })
+        async updateMicropost(micropostParams) {
+            await axios.patch(`/api/microposts/${this.micropostId}`, micropostParams);
             this.$refs.dialog.close()
-            this.micropost.content = micropostContent
         },
         async deleteMicropost() {
             if(confirm("削除しますか？")) {

@@ -21,8 +21,8 @@ class Api::MicropostsController < ApplicationController
 
   def update
     micropost = current_user.microposts.find(params[:id])
-    current_user.assign_attributes(micropost_params)
-    current_user.save_with_genres!(genre_names: genre_names)
+    micropost.assign_attributes(micropost_params)
+    micropost.save_with_genres!(genre_names: genre_names)
     render json: micropost, serializer: MicropostSerializer
   end
 
@@ -43,6 +43,6 @@ class Api::MicropostsController < ApplicationController
   end
 
   def genre_names
-    params.dig(:genre, :genre_names)
+    params.dig(:micropost, :genre_names)
   end
 end
