@@ -1,7 +1,6 @@
 class Api::CommentsController < ApplicationController
-
   def index
-    comments = Comment.where(micropost_id: params[:micropost_id]).order("id DESC")
+    comments = Comment.where(micropost_id: params[:micropost_id]).order('id DESC')
     render json: comments, each_serializer: CommentSerializer
   end
 
@@ -13,12 +12,11 @@ class Api::CommentsController < ApplicationController
     else
       render json: comment.errors, status: 422
     end
-
   end
 
   private
+
   def comment_params
     params.permit(:content).merge(user_id: current_user.id, micropost_id: params[:micropost_id])
   end
-  
 end

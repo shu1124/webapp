@@ -3,38 +3,42 @@
 // a relevant structure within app/javascript and only use these pack files to reference
 // that code so it'll be compiled.
 
-require("@rails/ujs").start()
-require("@rails/activestorage").start()
-require("channels")
-require("plugins/dayjs")
+// eslint-disable-next-line no-undef
+require('@rails/ujs').start();
+// eslint-disable-next-line no-undef
+require('@rails/activestorage').start();
+// eslint-disable-next-line no-undef
+require('channels');
+// eslint-disable-next-line no-undef
+require('plugins/dayjs');
 
-import Vue from 'vue'
-import App from '../app.vue'
-import Vuetify from 'vuetify'
-import 'vuetify/dist/vuetify.min.css'
-Vue.use(Vuetify)
+import Vue from 'vue';
+import App from '../app.vue';
+import Vuetify from 'vuetify';
+import 'vuetify/dist/vuetify.min.css';
+Vue.use(Vuetify);
 const vuetify = new Vuetify();
-import router from '@/router'
-import store from '@/store'
+import router from '@/router';
+import store from '@/store';
 
 document.addEventListener('DOMContentLoaded', () => {
-    const app = new Vue({
-        vuetify,
-        router,
-        store,
-        created() {
-            const userString = localStorage.getItem('currentUser')
-            if (userString) {
-                const userData = JSON.parse(userString)
-                this.$store.commit('auth/SET_CURRENT_USER', userData)
-            }
-        },
-        render: h => h(App)
-    }).$mount()
-    document.body.appendChild(app.$el)
+  const app = new Vue({
+    vuetify,
+    router,
+    store,
+    created() {
+      const userString = localStorage.getItem('currentUser');
+      if (userString) {
+        const userData = JSON.parse(userString);
+        this.$store.commit('auth/SET_CURRENT_USER', userData);
+      }
+    },
+    render: h => h(App)
+  }).$mount();
+  document.body.appendChild(app.$el);
 
-    console.log(app)
-})
+  console.log(app);
+});
 
 
 // Uncomment to copy all static images under ../images to the output folder and reference
