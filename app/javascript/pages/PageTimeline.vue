@@ -100,6 +100,20 @@
         </v-card>
       </v-col>
     </v-row>
+    <v-spacer />
+    <v-spacer />
+    <v-spacer />
+    <v-spacer />
+    <template v-if="pagingMeta">
+        <div class="text-center">
+            <v-pagination
+              color="indigo"
+              v-model="pagingMeta.current_page"
+              :length="pagingMeta.total_pages"
+              @input="paging"
+            ></v-pagination>
+        </div>
+    </template>
     
   </v-container>
 </template>

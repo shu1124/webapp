@@ -7,18 +7,8 @@
     </v-card-title>
     <v-card-text>
       <v-subheader class="pa-0">
-        Where do you live?
+        勉強内容をアウトプットしましょう
       </v-subheader>
-      <!-- <v-file-input
-        label="image"
-        filled
-        prepend-icon="mdi-camera"
-        accept="image/png,image/jpeg"
-        id="image" 
-        name="image"
-        type="file"
-        @change="setImage"
-      ></v-file-input> -->
       <v-row>
         <v-col
           cols="12"

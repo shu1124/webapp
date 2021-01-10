@@ -16,8 +16,10 @@
           <v-list-item-content>
             <v-list-item-title>
               <div>
-                <v-list-item-subtitle>follower</v-list-item-subtitle>
-                <v-list-item-title class="title">3</v-list-item-title>
+                <v-list-item-subtitle>follow</v-list-item-subtitle>
+                <v-list-item-title class="title">
+                  {{ countFollowing }}
+                </v-list-item-title>
               </div>
             </v-list-item-title>
           </v-list-item-content>
@@ -25,7 +27,9 @@
             <v-list-item-title>
               <div>
                 <v-list-item-subtitle>follower</v-list-item-subtitle>
-                <v-list-item-title class="title">3</v-list-item-title>
+                <v-list-item-title class="title">
+                  {{ countFollower }}
+                </v-list-item-title>
               </div>
             </v-list-item-title>
           </v-list-item-content>
@@ -33,7 +37,9 @@
 
         <v-list-item>
           <v-list-item-content>
-            <v-list-item-title class="title">{{ user.name }}</v-list-item-title>
+            <v-list-item-title class="title">
+              {{ user.name }}
+            </v-list-item-title>
             <v-list-item-subtitle>{{ user.email }}</v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
@@ -195,7 +201,10 @@
 
 <script>
 import axios from 'axios';
+import { csrfToken } from 'rails-ujs';
+axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken();
 import MicropostPostModal from '@/components/MicropostPostModal';
+
 export default {
   components: {
     MicropostPostModal
@@ -206,7 +215,9 @@ export default {
   },
   data: () => ({
     drawer: null,
-    targetUser: null
+    targetUser: null,
+    followingList: [],
+    followerList: []
   }),
   computed: {
     isMe() {
@@ -217,12 +228,24 @@ export default {
     },
     user() {
       return this.isMe ? this.$store.getters['auth/currentUser'] : this.targetUser;
-    }
+    },
+    countFollowing() {
+      return this.followingList.length;
+    },
+    countFollower() {
+      return this.followerList.length;
+    },
   },
   async created() {
     if (this.isMe) return;
     const res = await axios.get(`/api/users/${this.userId}`);
     this.targetUser = res.data.user;
+    this.fetchFollowingByUserId().then(result => {
+      this.followingList = result;
+    });
+    this.fetchFollowerByUserId().then(result => {
+      this.followerList = result;
+    });
   },
   methods: {
     logout() {
@@ -236,6 +259,18 @@ export default {
     async uploadMicropost(formData) {
       await axios.post('/api/microposts/', formData);
       this.$refs.dialog.close();
+    },
+    async fetchFollowingByUserId() {
+      const res = await axios.get(`/api/users/${this.userId}/following`);
+      // eslint-disable-next-line no-undef
+      if (res.status !== 200) { process.exit(); }
+      return res.data;
+    },
+    async fetchFollowerByUserId() {
+      const res = await axios.get(`/api/users/${this.userId}/follower`);
+      // eslint-disable-next-line no-undef
+      if (res.status !== 200) { process.exit(); }
+      return res.data;
     },
   }
 };
