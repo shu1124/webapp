@@ -42,4 +42,12 @@ class User < ApplicationRecord
   def unfollow(user)
     following_relationships.find_by(following_id: user.id).destroy
   end
+
+
+  def self.guest
+    find_or_create_by!(name: 'guest') do |user|
+      user.assign_attributes({email: "guest@example.com"})
+      user.password = SecureRandom.urlsafe_base64
+    end
+  end
 end

@@ -7,7 +7,9 @@ Rails.application.routes.draw do
       end
     end
     resources :relationships, only: [:create, :destroy]
-    resource :session, only: %i[create destroy]
+    resource :session, only: %i[create destroy] do
+      post "guest_login", on: :collection
+    end
     resources :microposts, only: %i[index create show update destroy] do
       resources :comments, only: [:create, :index]
       resources :likes, only: [:index, :create, :destroy]

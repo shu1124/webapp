@@ -10,6 +10,11 @@ class Api::SessionsController < ApplicationController
     end
   end
 
+  def guest_login
+    user = User.guest
+    session[:user_id] = user.id
+  end
+
   private
 
   def session_params
