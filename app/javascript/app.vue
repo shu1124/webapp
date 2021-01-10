@@ -4,6 +4,41 @@
       v-model="drawer"
       app
     >
+      <v-list v-if="user">
+        <v-list-item class="grow">
+          <v-list-item-avatar color="grey darken-3">
+            <v-img
+              class="elevation-6"
+              :src="user.avatar_url"
+            />
+          </v-list-item-avatar>
+
+          <v-list-item-content>
+            <v-list-item-title>
+              <div>
+                <v-list-item-subtitle>follower</v-list-item-subtitle>
+                <v-list-item-title class="title">3</v-list-item-title>
+              </div>
+            </v-list-item-title>
+          </v-list-item-content>
+          <v-list-item-content>
+            <v-list-item-title>
+              <div>
+                <v-list-item-subtitle>follower</v-list-item-subtitle>
+                <v-list-item-title class="title">3</v-list-item-title>
+              </div>
+            </v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+
+        <v-list-item>
+          <v-list-item-content>
+            <v-list-item-title class="title">{{ user.name }}</v-list-item-title>
+            <v-list-item-subtitle>{{ user.email }}</v-list-item-subtitle>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
+      <v-divider />
       <v-list dense>
         <v-list-item 
           to="/"
@@ -127,6 +162,21 @@
             <router-view />
           </v-col>
         </v-row>
+        <v-card-text style="height: 50px; position: relative">
+          <v-btn
+            class="mx-2"
+            outlined
+            fab
+            dark
+            large
+            absolute
+            top
+            right
+            color="primary"
+          >
+            <v-icon>mdi-pencil</v-icon>
+          </v-btn>
+        </v-card-text>
       </v-container>
     </v-main>
     <v-footer
@@ -139,6 +189,7 @@
 </template>
 
 <script>
+import axios from 'axios';
 export default {
   props: {
     // eslint-disable-next-line vue/require-default-prop
@@ -146,7 +197,24 @@ export default {
   },
   data: () => ({
     drawer: null,
+    targetUser: null
   }),
+  computed: {
+    isMe() {
+      return this.$store.getters['auth/currentUser'] && this.userId == this.$store.getters['auth/currentUser'].id;
+    },
+    userId() {
+      return this.$route.params.id || this.$store.getters['auth/currentUser'].id;
+    },
+    user() {
+      return this.isMe ? this.$store.getters['auth/currentUser'] : this.targetUser;
+    }
+  },
+  async created() {
+    if (this.isMe) return;
+    const res = await axios.get(`/api/users/${this.userId}`);
+    this.targetUser = res.data.user;
+  },
   methods: {
     logout() {
       if (confirm('ログアウトしますか？')) {
