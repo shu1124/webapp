@@ -1,10 +1,27 @@
 <template>
   <div>
-    <div v-if="isLiked" @click="deleteLike()">
-      <v-btn icon color="pink"> <v-icon>mdi-heart</v-icon></v-btn>{{ count }}
+    <div 
+      v-if="isLiked" 
+      @click="deleteLike()"
+    >
+      <v-btn 
+        icon 
+        color="pink"
+      > 
+        <v-icon>
+          mdi-heart
+        </v-icon>
+      </v-btn>
+      {{ count }}
     </div>
-    <div v-else @click="registerLike()">
-      <v-btn icon> <v-icon>mdi-heart</v-icon></v-btn>{{ count }}
+    <div 
+      v-else 
+      @click="registerLike()"
+    >
+      <v-btn icon> 
+        <v-icon>mdi-heart</v-icon>
+      </v-btn>
+      {{ count }}
     </div>
   </div>
 </template>
@@ -15,6 +32,7 @@ import { csrfToken } from 'rails-ujs';
 axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken();
 
 export default {
+  // eslint-disable-next-line vue/require-prop-types
   props: ['userId', 'micropostId'],
   data() {
     return {

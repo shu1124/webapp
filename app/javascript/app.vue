@@ -13,20 +13,22 @@
             <v-icon>mdi-home</v-icon>
           </v-list-item-action>
           <v-list-item-content>
-            <v-list-item-title>ホーム</v-list-item-title>
+            <v-list-item-title>すべての投稿</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+
         <v-list-item 
-          to="/users" 
+          to="/profile"
           link
         >
           <v-list-item-action>
             <v-icon>mdi-account-group</v-icon>
           </v-list-item-action>
           <v-list-item-content>
-            <v-list-item-title>ユーザー</v-list-item-title>
+            <v-list-item-title>ユーザーを探す</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+        
         <v-list-item 
           v-if="$store.getters['auth/currentUser']" 
           :to="`/users/${$store.getters['auth/currentUser'].id}`"
@@ -36,9 +38,24 @@
             <v-icon>mdi-account</v-icon>
           </v-list-item-action>
           <v-list-item-content>
-            <v-list-item-title>プロフィール</v-list-item-title>
+            <v-list-item-title>マイページ</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+
+        <v-list-item 
+          v-if="$store.getters['auth/currentUser']" 
+          to="/like"
+          link
+        >
+          <v-list-item-action>
+            <v-icon>mdi-heart</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>お気に入り</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+
+
         <v-list-item 
           v-if="$store.getters['auth/currentUser']" 
           :to="`/micropost`" 
@@ -51,6 +68,7 @@
             <v-list-item-title>投稿する</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+        
         <v-list-item 
           v-if="$store.getters['auth/currentUser']"
           link
