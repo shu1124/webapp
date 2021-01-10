@@ -162,9 +162,9 @@
             <router-view />
           </v-col>
         </v-row>
-        <v-card-text style="height: 50px; position: relative">
+        <v-card-text style="height: 100px; position: relative">
           <v-btn
-            class="mx-2"
+            class="mx-3"
             outlined
             fab
             dark
@@ -173,9 +173,14 @@
             top
             right
             color="primary"
+            @click="openEditMicropost"
           >
             <v-icon>mdi-pencil</v-icon>
           </v-btn>
+          <micropost-post-modal 
+            ref="dialog" 
+            @upload="uploadMicropost"
+          />
         </v-card-text>
       </v-container>
     </v-main>
@@ -190,7 +195,11 @@
 
 <script>
 import axios from 'axios';
+import MicropostPostModal from '@/components/MicropostPostModal';
 export default {
+  components: {
+    MicropostPostModal
+  },
   props: {
     // eslint-disable-next-line vue/require-default-prop
     source: String,
@@ -220,7 +229,14 @@ export default {
       if (confirm('ログアウトしますか？')) {
         this.$store.dispatch('auth/logout');
       }
-    }
+    },
+    openEditMicropost() {
+      this.$refs.dialog.open();
+    },
+    async uploadMicropost(formData) {
+      await axios.post('/api/microposts/', formData);
+      this.$refs.dialog.close();
+    },
   }
 };
 </script>

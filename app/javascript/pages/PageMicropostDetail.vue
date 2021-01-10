@@ -14,22 +14,19 @@
       height="500px"
       dark
     >
-      <v-row class="fill-height">
+      <v-row >
         <v-spacer></v-spacer>
 
-        <v-card-title class="white--text pl-12 pt-12">
-          <div class="display-1 pl-12 pt-12">
-            {{ micropost.title }}
-          </div>
+        <v-card-title>
           <div v-if="isMine" class="d-flex">
-            <v-btn fab small dark color="teal" @click="openEditMicropost" class="mx-2">
+            <v-btn outlined fab large dark color="teal" @click="openEditMicropost" class="mx-3">
                 <v-icon>mdi-pen</v-icon>
             </v-btn>
-            <v-btn fab small dark color="error" @click="deleteMicropost" class="mx-2">
+            <v-btn outlined fab large dark color="error" @click="deleteMicropost" class="mx-4">
                 <v-icon>mdi-delete</v-icon>
             </v-btn>
             <micropost-edit-modal v-if="isMine" ref="dialog" :micropost="micropost" @update="updateMicropost"></micropost-edit-modal>
-        </div>
+          </div>
         </v-card-title>
       </v-row>
     </v-img>
@@ -151,7 +148,6 @@ export default {
     },
     components: {
         MicropostEditModal,
-
     },
     created() {
         this.fetchMicropost(),
