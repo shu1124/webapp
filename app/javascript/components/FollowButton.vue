@@ -2,12 +2,21 @@
   <div>
     <div>
       <div v-if="following_check">
-        <v-btn color="primary" @click="deleteFollow()" depressed >
+        <v-btn 
+          color="primary"
+          depressed
+          @click="deleteFollow()"
+        >
           フォロー中
         </v-btn>
       </div>
       <div v-else>
-        <v-btn color="primary" depressed outlined @click="registerFollow()">
+        <v-btn 
+          color="primary" 
+          depressed 
+          outlined 
+          @click="registerFollow()"
+        >
           フォローする
         </v-btn>
       </div>

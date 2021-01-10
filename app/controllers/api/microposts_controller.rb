@@ -32,6 +32,12 @@ class Api::MicropostsController < ApplicationController
     render json: micropost, serializer: MicropostSerializer
   end
 
+  def likes
+    like = Like.where(user_id: current_user.id).pluck(:micropost_id)
+    microposts = Micropost.find(like) 
+    render json: microposts, each_serializer: MicropostSerializer
+  end
+
   private
 
   def micropost_params

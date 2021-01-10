@@ -1,5 +1,7 @@
-process.env.NODE_ENV = process.env.NODE_ENV || 'development'
+// eslint-disable-next-line no-undef
+process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
-const environment = require('./environment')
+import { toWebpackConfig } from './environment';
 
-module.exports = environment.toWebpackConfig()
+// eslint-disable-next-line no-undef
+export default toWebpackConfig();

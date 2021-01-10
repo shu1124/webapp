@@ -1,40 +1,5 @@
 <template>
   <v-container>
-    <template>
-      <v-card class="mb-3">
-        <v-card-text>
-          <header>絞り込み条件</header>
-          <v-row 
-            dense 
-            justify="start"
-          >
-            <template>
-              <v-checkbox 
-                v-for="genre in genres"
-                :key="genre.id"
-                v-model="query.selectedGenres"
-                :label="genre.name"
-                :value="genre.id"
-                class="mr-5"
-                hide-details="auto"
-                @click.native="fetchUsers"
-              />
-            </template>
-          </v-row>
-          <v-row>
-            <template>
-              <v-col cols="12">
-                <v-text-field 
-                  v-model="query.userName" 
-                  label="UserName" 
-                  @input="fetchUsers"
-                />
-              </v-col>
-            </template>
-          </v-row>
-        </v-card-text>
-      </v-card>
-    </template>
     <v-row>
       <v-col
         v-for="micropost in microposts"
@@ -136,7 +101,7 @@ export default {
   },
   methods: {
     async fetchMicroposts() {
-      const res = await axios.get('/api/microposts', { params: { page: this.currentPage } });
+      const res = await axios.get('/api/microposts/likes', { params: { page: this.currentPage } });
       this.microposts = res.data.microposts;
       this.pagingMeta = res.data.meta;
     },

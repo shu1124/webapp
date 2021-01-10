@@ -8,7 +8,7 @@ import PageMicropostPost from '@/pages/PageMicropostPost';
 import PageMicropostDetail from '@/pages/PageMicropostDetail';
 import PageProfile from '@/pages/PageProfile';
 import PageUsers from '@/pages/PageUsers';
-import PagePosts from '@/pages/PagePosts';
+import PageMicropostLike from '@/pages/PageMicropostLike';
 
 const router = new VueRouter({
   routes: [
@@ -18,10 +18,9 @@ const router = new VueRouter({
     { path: '/microposts', component: PageTimeline },
     { path: '/micropost', component: PageMicropostPost, name: 'micropost-post' },
     { path: '/microposts/:id', component: PageMicropostDetail, name: 'micropost-detail' },
-    { path: '/profile', component: PageProfile, name: 'my-profile' },
     { path: '/users/:id', component: PageProfile, name: 'user-profile' },
-    { path: '/users', component: PageUsers, name: 'users' },
-    { path: '/post', component: PagePosts, name: 'posts' },
+    { path: '/profile', component: PageUsers, name: 'users' },
+    { path: '/like', component: PageMicropostLike, name: 'micropost-like' },
   ]
 });
 
