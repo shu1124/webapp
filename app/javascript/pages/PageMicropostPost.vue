@@ -5,7 +5,7 @@
     </v-card-title>
     <v-card-text>
       <v-subheader class="pa-0">
-        Where do you live?
+        勉強内容をアウトプットしましょう
       </v-subheader>
       <v-file-input
         id="image"
@@ -91,6 +91,7 @@ export default {
       }
       this.createPost(formData);
       this.resetForm();
+      this.$router.push('/');
     },
     resetForm() {
       this.content = '';

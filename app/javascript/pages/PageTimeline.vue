@@ -17,7 +17,7 @@
                 :value="genre.id"
                 class="mr-5"
                 hide-details="auto"
-                @click.native="fetchUsers"
+                @click.native="fetchMicroposts"
               />
             </template>
           </v-row>
@@ -25,9 +25,9 @@
             <template>
               <v-col cols="12">
                 <v-text-field 
-                  v-model="query.userName" 
-                  label="UserName" 
-                  @input="fetchUsers"
+                  v-model="query.micropostGenre" 
+                  label="Genre" 
+                  @input="fetchMicroposts"
                 />
               </v-col>
             </template>
@@ -100,6 +100,21 @@
         </v-card>
       </v-col>
     </v-row>
+    <v-spacer />
+    <v-spacer />
+    <v-spacer />
+    <v-spacer />
+    <template v-if="pagingMeta">
+        <div class="text-center">
+            <v-pagination
+              color="indigo"
+              v-model="pagingMeta.current_page"
+              :length="pagingMeta.total_pages"
+              @input="paging"
+            ></v-pagination>
+        </div>
+    </template>
+    
   </v-container>
 </template>
 
@@ -114,11 +129,10 @@ export default {
   data() {
     return {
       microposts: [],
-      users: [],
       genres: [],
       query: {
         selectedGenres: [],
-        userName: ''
+        micropostGenre: ''
       },
       pagingMeta: null,
       currentPage: 1
@@ -130,28 +144,23 @@ export default {
     }
   },
   created() {
-    this.fetchUsers();
+    this.fetchMicroposts();
     this.fetchGenres();
     this.fetchMicroposts();
   },
   methods: {
     async fetchMicroposts() {
-      const res = await axios.get('/api/microposts', { params: { page: this.currentPage } });
-      this.microposts = res.data.microposts;
-      this.pagingMeta = res.data.meta;
-    },
-    async fetchUsers() {
       const searchParams = {
         q: {
-          name: this.query.userName,
+          name: this.query.micropostGenre,
           genre_ids: this.query.selectedGenres
         }
       };
       const pagingParams = { page: this.currentPage };
       const params = { ...searchParams, ...pagingParams };
       const paramsSerializer = (params) => qs.stringify(params, { arrayFormat: 'brackets' });
-      const res = await axios.get('/api/users', { params, paramsSerializer });
-      this.users = res.data.users;
+      const res = await axios.get('/api/microposts', { params, paramsSerializer });
+      this.microposts = res.data.microposts;
       this.pagingMeta = res.data.meta;
     },
     async fetchGenres() {
@@ -160,7 +169,7 @@ export default {
     },
     paging(page) {
       this.currentPage = page;
-      this.fetchUsers();
+      this.fetchMicroposts();
       this.$vuetify.goTo(0);
     }
   }

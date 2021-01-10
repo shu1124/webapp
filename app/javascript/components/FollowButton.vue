@@ -42,14 +42,17 @@ export default {
     // eslint-disable-next-line vue/return-in-computed-property
     isFollow(){
       if (this.followList.length === 0) { return false; }
-    }
+    },
+    currentUserId() {
+      return this.$store.getters['auth/currentUser'].id;
+    },
   },
   created() {
     this.fetchFollowing();
   },
   methods: {
     async fetchFollowing() {
-      const res = await axios.get('/api/users/2/following');
+      const res = await axios.get(`/api/users/${this.currentUserId}/following`);
       if (res.data.users.id) { 
         this.following_check = true;
       } else {
@@ -61,7 +64,7 @@ export default {
       this.following_check = true;
     },
     async deleteFollow() {
-      await axios.delete('/api/relationships/1', {  user_id: this.userId });
+      await axios.delete(`/api/relationships/${this.userId}`, {  user_id: this.userId });
       this.following_check =false;
     },
     findFollowId () {

@@ -13,7 +13,7 @@ class Micropost < ApplicationRecord
   has_many :genres, through: :micropost_genres
 
   scope :by_name, ->(name) { where('name LIKE ?', "%#{name}%") }
-  scope :by_genre, ->(_genre_ids) { joins(:micropost_genres).where(micropost_genres: { genre_id: genres_ids }) }
+  scope :by_genre, ->(genre_ids) { joins(:micropost_genres).where(micropost_genres: { genre_id: genre_ids }) }
 
   def save_with_genres!(genre_names:)
     return save! if genre_names.nil?

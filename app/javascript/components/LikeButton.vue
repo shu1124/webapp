@@ -68,7 +68,7 @@ export default {
         this.likeList = result;
       });
     },
-    deleteLike: async function() {
+    async deleteLike() {
       const likeId = this.findLikeId();
       const res = await axios.delete(`/api/microposts/${this.micropostId}/likes/${likeId}`);
       // eslint-disable-next-line no-undef

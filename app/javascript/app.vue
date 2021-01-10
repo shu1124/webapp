@@ -4,6 +4,47 @@
       v-model="drawer"
       app
     >
+      <v-list v-if="user">
+        <v-list-item class="grow">
+          <v-list-item-avatar color="grey darken-3">
+            <v-img
+              class="elevation-6"
+              :src="user.avatar_url"
+            />
+          </v-list-item-avatar>
+
+          <v-list-item-content>
+            <v-list-item-title>
+              <div>
+                <v-list-item-subtitle>follow</v-list-item-subtitle>
+                <v-list-item-title class="title">
+                  {{ countFollowing }}
+                </v-list-item-title>
+              </div>
+            </v-list-item-title>
+          </v-list-item-content>
+          <v-list-item-content>
+            <v-list-item-title>
+              <div>
+                <v-list-item-subtitle>follower</v-list-item-subtitle>
+                <v-list-item-title class="title">
+                  {{ countFollower }}
+                </v-list-item-title>
+              </div>
+            </v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+
+        <v-list-item>
+          <v-list-item-content>
+            <v-list-item-title class="title">
+              {{ user.name }}
+            </v-list-item-title>
+            <v-list-item-subtitle>{{ user.email }}</v-list-item-subtitle>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
+      <v-divider />
       <v-list dense>
         <v-list-item 
           to="/"
@@ -127,6 +168,26 @@
             <router-view />
           </v-col>
         </v-row>
+        <v-card-text style="height: 100px; position: relative">
+          <v-btn
+            class="mx-3"
+            outlined
+            fab
+            dark
+            large
+            absolute
+            top
+            right
+            color="primary"
+            @click="openEditMicropost"
+          >
+            <v-icon>mdi-pencil</v-icon>
+          </v-btn>
+          <micropost-post-modal 
+            ref="dialog" 
+            @upload="uploadMicropost"
+          />
+        </v-card-text>
       </v-container>
     </v-main>
     <v-footer
@@ -139,20 +200,78 @@
 </template>
 
 <script>
+import axios from 'axios';
+import { csrfToken } from 'rails-ujs';
+axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken();
+import MicropostPostModal from '@/components/MicropostPostModal';
+
 export default {
+  components: {
+    MicropostPostModal
+  },
   props: {
     // eslint-disable-next-line vue/require-default-prop
     source: String,
   },
   data: () => ({
     drawer: null,
+    targetUser: null,
+    followingList: [],
+    followerList: []
   }),
+  computed: {
+    isMe() {
+      return this.$store.getters['auth/currentUser'] && this.userId == this.$store.getters['auth/currentUser'].id;
+    },
+    userId() {
+      return this.$route.params.id || this.$store.getters['auth/currentUser'].id;
+    },
+    user() {
+      return this.isMe ? this.$store.getters['auth/currentUser'] : this.targetUser;
+    },
+    countFollowing() {
+      return this.followingList.length;
+    },
+    countFollower() {
+      return this.followerList.length;
+    },
+  },
+  async created() {
+    if (this.isMe) return;
+    const res = await axios.get(`/api/users/${this.userId}`);
+    this.targetUser = res.data.user;
+    this.fetchFollowingByUserId().then(result => {
+      this.followingList = result;
+    });
+    this.fetchFollowerByUserId().then(result => {
+      this.followerList = result;
+    });
+  },
   methods: {
     logout() {
       if (confirm('ログアウトしますか？')) {
         this.$store.dispatch('auth/logout');
       }
-    }
+    },
+    openEditMicropost() {
+      this.$refs.dialog.open();
+    },
+    async uploadMicropost(formData) {
+      await axios.post('/api/microposts/', formData);
+      this.$refs.dialog.close();
+    },
+    async fetchFollowingByUserId() {
+      const res = await axios.get(`/api/users/${this.userId}/following`);
+      // eslint-disable-next-line no-undef
+      if (res.status !== 200) { process.exit(); }
+      return res.data;
+    },
+    async fetchFollowerByUserId() {
+      const res = await axios.get(`/api/users/${this.userId}/follower`);
+      // eslint-disable-next-line no-undef
+      if (res.status !== 200) { process.exit(); }
+      return res.data;
+    },
   }
 };
 </script>
