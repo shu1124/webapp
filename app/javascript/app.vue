@@ -4,7 +4,7 @@
       v-model="drawer"
       app
     >
-      <v-list v-if="user">
+      <v-list v-if="$store.getters['auth/currentUser']">
         <v-list-item class="grow">
           <v-list-item-avatar color="grey darken-3">
             <v-img
@@ -168,9 +168,13 @@
             <router-view />
           </v-col>
         </v-row>
-        <v-card-text style="height: 100px; position: relative">
+        <!-- <v-card-text 
+          v-if="$store.getters['auth/currentUser']" 
+          style="height: 100px; position: relative"
+        >
           <v-btn
             class="mx-3"
+            shrink-on-scroll
             outlined
             fab
             dark
@@ -187,7 +191,7 @@
             ref="dialog" 
             @upload="uploadMicropost"
           />
-        </v-card-text>
+        </v-card-text> -->
       </v-container>
     </v-main>
     <v-footer
@@ -203,12 +207,12 @@
 import axios from 'axios';
 import { csrfToken } from 'rails-ujs';
 axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken();
-import MicropostPostModal from '@/components/MicropostPostModal';
+// import MicropostPostModal from '@/components/MicropostPostModal';
 
 export default {
-  components: {
-    MicropostPostModal
-  },
+  // components: {
+  //   MicropostPostModal
+  // },
   props: {
     // eslint-disable-next-line vue/require-default-prop
     source: String,

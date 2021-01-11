@@ -12,11 +12,11 @@ Rails.application.routes.draw do
     end
     resources :microposts, only: %i[index create show update destroy] do
       resources :comments, only: [:create, :index]
-      resources :likes, only: [:index, :create, :destroy]
       collection do
         get :likes
       end
     end
+    resources :likes, only: [:index, :create, :destroy]
     resources :tags, only: %i[index]
     resources :genres, only: %i[index]
     namespace :me do

@@ -25,7 +25,10 @@ const actions = {
     const res = await axios.post('/api/session', sessionParams);
     commit('SET_CURRENT_USER', res.data.user);
   },
-
+  //   async guestLogin({ commit }) {
+  //     const res = await axios.post('/api/session/guest_login');
+  //     commit('SET_CURRENT_USER', res.data.user);
+  //   },
   logout({ commit }) {
     commit('CLEAR_CURRENT_USER');
   },

@@ -1,4 +1,5 @@
 class Api::CommentsController < ApplicationController
+  before_action :authenticate
   def index
     comments = Comment.where(micropost_id: params[:micropost_id]).order('id DESC')
     render json: comments, each_serializer: CommentSerializer
