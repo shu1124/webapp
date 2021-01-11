@@ -1,40 +1,34 @@
 <template>
   <v-container>
-    <template>
-      <v-card class="mb-3">
-        <v-card-text>
-          <header>絞り込み条件</header>
-          <v-row 
-            dense 
-            justify="start"
-          >
-            <template>
-              <v-checkbox 
-                v-for="genre in genres"
-                :key="genre.id"
-                v-model="query.selectedGenres"
-                :label="genre.name"
-                :value="genre.id"
-                class="mr-5"
-                hide-details="auto"
-                @click.native="fetchMicroposts"
-              />
-            </template>
-          </v-row>
-          <v-row>
-            <template>
-              <v-col cols="12">
-                <v-text-field 
-                  v-model="query.micropostGenre" 
-                  label="Genre" 
-                  @input="fetchMicroposts"
-                />
-              </v-col>
-            </template>
-          </v-row>
-        </v-card-text>
-      </v-card>
-    </template>
+    <v-card class="mb-3">
+      <v-card-text>
+        <header>絞り込み条件</header>
+        <v-row 
+          dense 
+          justify="start"
+        >
+          <v-checkbox 
+            v-for="genre in genres"
+            :key="genre.id"
+            v-model="query.selectedGenres"
+            :label="genre.name"
+            :value="genre.id"
+            class="mr-5"
+            hide-details="auto"
+            @click.native="fetchMicroposts"
+          />
+        </v-row>
+        <v-row>
+          <v-col cols="12">
+            <v-text-field 
+              v-model="query.micropostGenre" 
+              label="Genre" 
+              @input="fetchMicroposts"
+            />
+          </v-col>
+        </v-row>
+      </v-card-text>
+    </v-card>
     <v-row>
       <v-col
         v-for="micropost in microposts"
@@ -91,7 +85,8 @@
           </v-card-text>
           <v-card-actions>
             <v-btn icon>
-              <like-button 
+              <like-button
+                v-if="user" 
                 :user-id="micropost.user.id"
                 :micropost-id="micropost.id"
               />
@@ -100,21 +95,24 @@
         </v-card>
       </v-col>
     </v-row>
-    <v-spacer />
-    <v-spacer />
-    <v-spacer />
-    <v-spacer />
-    <template v-if="pagingMeta">
-        <div class="text-center">
+    <v-row>
+      <v-col>
+        <v-spacer />
+        <template 
+          v-if="pagingMeta" 
+          class="mr-5"
+        >
+          <div class="text-center mr-5">
             <v-pagination
-              color="indigo"
               v-model="pagingMeta.current_page"
+              color="indigo"
               :length="pagingMeta.total_pages"
               @input="paging"
-            ></v-pagination>
-        </div>
-    </template>
-    
+            />
+          </div>
+        </template>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
@@ -141,7 +139,16 @@ export default {
   computed: {
     isExistMicroposts() {
       return this.microposts.length > 0;
-    }
+    },
+    isMe() {
+      return this.$store.getters['auth/currentUser'] && this.userId == this.$store.getters['auth/currentUser'].id;
+    },
+    userId() {
+      return this.$route.params.id || this.$store.getters['auth/currentUser'].id;
+    },
+    user() {
+      return this.isMe ? this.$store.getters['auth/currentUser'] : this.targetUser;
+    },
   },
   created() {
     this.fetchMicroposts();

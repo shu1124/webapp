@@ -52,6 +52,13 @@
             >
               ログイン
             </v-btn>
+            <v-btn 
+              dark 
+              color="indigo" 
+              @click="guestLogin"
+            >
+              ゲストログイン
+            </v-btn>
           </v-card-actions>
         </v-card>
       </v-col>
@@ -79,6 +86,20 @@ export default {
     },
   },
   methods: {
+    // async guestLogin() {
+    //   await this.$store.dispatch('auth/guestlogin');
+    //   this.$router.push('/');
+    // },
+    async guestLogin() {
+      const sessionParams = {
+        session: {
+          email: 'test@example.com',
+          password: 'password'
+        }
+      };
+      await this.$store.dispatch('auth/login', sessionParams);
+      this.$router.push('/');
+    },
     async login() {
       if(this.$refs.form.validate()) {
         try {

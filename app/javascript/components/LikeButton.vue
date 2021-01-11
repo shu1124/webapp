@@ -8,10 +8,8 @@
         icon 
         color="pink"
       > 
-        <v-icon>
-          mdi-heart
-        </v-icon>
-      </v-btn>
+        <v-icon> mdi-heart </v-icon>
+      </v-btn> 
       {{ count }}
     </div>
     <div 
@@ -55,32 +53,44 @@ export default {
   },
   methods: {
     async fetchLikeByPostId() {
-      const res = await axios.get(`/api/microposts/${this.micropostId}/likes`);
+      const res = await axios.get(`/api/likes/?micropost_id=${this.micropostId}`);
       // eslint-disable-next-line no-undef
       if (res.status !== 200) { process.exit(); }
       return res.data;
     },
     async registerLike() {
-      const res = await axios.post(`/api/microposts/${this.micropostId}/likes`, { micropost_id: this.micropostId });
+      const res = await axios.post('/api/likes', { micropost_id: this.micropostId });
       // eslint-disable-next-line no-undef
       if (res.status !== 201) { process.exit(); }
       this.fetchLikeByPostId().then(result => {
         this.likeList = result;
       });
     },
-    async deleteLike() {
+    async deleteLike () {
       const likeId = this.findLikeId();
-      const res = await axios.delete(`/api/microposts/${this.micropostId}/likes/${likeId}`);
+      const res = await axios.delete(`/api/likes/${likeId}`);
       // eslint-disable-next-line no-undef
       if (res.status !== 200) { process.exit(); }
       this.likeList = this.likeList.filter(n => n.id !== likeId);
     },
-    findLikeId: function() {
+    async checkLike () {
+      const likeId = this.findLikeId();
+      const res = await axios.delete(`/api/likes/${likeId}`);
+      // eslint-disable-next-line no-undef
+      if (res.status !== 200) { process.exit(); }
+      this.likeList = this.likeList.filter(n => n.id !== likeId);
+    },
+    findLikeId () {
       const like = this.likeList.find((like) => {
         return (like.user_id === this.userId);
       });
       if (like) { return like.id; }
-    }
+    },
+    async fetchMicroposts() {
+      const res = await axios.get('/api/microposts/likes', { params: { page: this.currentPage } });
+      this.microposts = res.data.microposts;
+    },
   }
 };
 </script>
+

@@ -69,17 +69,20 @@
         </v-card>
       </v-col>
     </v-row>
-    <v-row justify="center" class="pb-10">
-      <template v-if="pagingMeta">
-        <div class="text-center">
-          <v-pagination
-                  color="indigo"
-                  v-model="pagingMeta.current_page"
-                  :length="pagingMeta.total_pages"
-                  @input="paging"
-          ></v-pagination>
+    <v-row>
+      <v-col>
+    <v-spacer />
+    <template v-if="pagingMeta" class="mr-5">
+        <div class="text-center mr-5">
+            <v-pagination
+              color="indigo"
+              v-model="pagingMeta.current_page"
+              :length="pagingMeta.total_pages"
+              @input="paging"
+            ></v-pagination>
         </div>
-      </template>
+    </template>
+    </v-col>
     </v-row>
   </v-container>
 </template>

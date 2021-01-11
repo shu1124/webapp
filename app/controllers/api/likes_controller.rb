@@ -1,4 +1,5 @@
 class Api::LikesController < ApplicationController
+  before_action :authenticate
   def index
     render json: Like.filter_by_post(params[:micropost_id]).select(:id, :user_id, :micropost_id)
   end
@@ -16,6 +17,6 @@ class Api::LikesController < ApplicationController
   private
 
   def likes_params
-    params.permit(:micropost_id)
+    params.require(:like).permit(:micropost_id)
   end
 end
