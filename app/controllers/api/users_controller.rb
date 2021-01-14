@@ -31,7 +31,6 @@ class Api::UsersController < ApplicationController
     render json: users, each_serializer: UserSerializer
   end
 
-
   private
 
   def user_params

@@ -5,11 +5,14 @@ RSpec.describe 'Api::Me::Accounts', type: :request do
     let(:user) { create(:user) }
     let(:token) { Jwt::TokenProvider.call(user_id: user.id) }
     let(:headers) { { Authorization: "Bearer #{token}" } }
-    let(:user_params) { { user: { name: 'updated_name', introduction: 'updated_introduction', avatar: fixture_file_upload(Rails.root.join('spec', 'fixtures', 'dummy.png')), tag_names: ['Ruby', 'Rails'] } } }
+    let(:user_params) do
+      { user: { name: 'updated_name', introduction: 'updated_introduction',
+                avatar: fixture_file_upload(Rails.root.join('spec', 'fixtures', 'dummy.png')), tag_names: %w[Ruby Rails] } }
+    end
     it 'プロフィールが更新できること' do
-      expect {
+      expect do
         patch api_me_account_path, params: user_params, headers: headers
-      }.to change { Tag.count }.by(2)
+      end.to change { Tag.count }.by(2)
 
       expect(response).to have_http_status(200)
       json = JSON.parse(response.body)

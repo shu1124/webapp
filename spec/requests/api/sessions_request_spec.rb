@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Api::Sessions", type: :request do
+RSpec.describe 'Api::Sessions', type: :request do
   describe 'POST /api/session' do
     let!(:user) { create(:user) }
     context '認証情報が正しい場合' do
@@ -10,11 +10,11 @@ RSpec.describe "Api::Sessions", type: :request do
         expect(response).to have_http_status(200)
         json = JSON.parse(response.body)
         expect(json['user']).to include({
-                                       'id' => user.id,
-                                       'name' => user.name,
-                                       'email' => user.email,
-                                       'token' => be_present
-                                   })
+                                          'id' => user.id,
+                                          'name' => user.name,
+                                          'email' => user.email,
+                                          'token' => be_present
+                                        })
       end
     end
 
