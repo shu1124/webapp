@@ -1,0 +1,9 @@
+test: &default
+  adapter: mysql2
+  encoding: utf8
+  pool: 5
+  username: <%= ENV.fetch("MYSQL_USERNAME") %>
+  password: <%= ENV.fetch("MYSQL_PASSWORD") %>
+  host: <%= ENV.fetch("MYSQL_HOST") %>
+  port: <%= ENV.fetch("MYSQL_PORT") %>
+  database: ci_test

@@ -34,7 +34,7 @@ class Api::MicropostsController < ApplicationController
 
   def likes
     like = Like.where(user_id: current_user.id).pluck(:micropost_id)
-    microposts = Micropost.find(like) 
+    microposts = Micropost.find(like)
     render json: microposts, each_serializer: MicropostSerializer
   end
 
