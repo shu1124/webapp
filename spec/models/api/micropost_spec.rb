@@ -4,7 +4,7 @@ RSpec.describe Micropost, type: :model do
   before do
     @micropost = FactoryBot.build(:micropost)
   end
-  describe 'micropostのモデルテスト' do
+  describe 'micropostモデルのテスト' do
     it 'すべて適切に入力した場合は出品できる' do
       expect(@micropost).to be_valid
     end
