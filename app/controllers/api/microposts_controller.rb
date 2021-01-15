@@ -1,6 +1,6 @@
 class Api::MicropostsController < ApplicationController
   before_action :authenticate, only: %i[create update destroy]
-  PER_PAGE = 10
+  PER_PAGE = 12
   def index
     search_microposts_form = SearchMicropostsForm.new(search_params)
     microposts = search_microposts_form.search.order(created_at: :desc).page(params[:page]).per(PER_PAGE)

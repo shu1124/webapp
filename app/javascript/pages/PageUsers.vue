@@ -1,69 +1,86 @@
 <template>
   <v-container>
-    <template>
-      <v-card class="mb-3">
-        <v-card-text>
-          <header>絞り込み条件</header>
-          <v-row dense justify="start">
-            <template>
-              <v-checkbox v-for="tag in tags"
-                          :key="tag.id"
-                          v-model="query.selectedTags"
-                          :label="tag.name"
-                          :value="tag.id"
-                          class="mr-5"
-                          @click.native="fetchUsers"
-                          hide-details="auto"
-              >
-              </v-checkbox>
-            </template>
-          </v-row>
-          <v-row>
-            <template>
-              <v-col cols="12">
-                <v-text-field label="UserName" v-model="query.userName" @input="fetchUsers"></v-text-field>
-              </v-col>
-            </template>
-          </v-row>
-        </v-card-text>
-      </v-card>
-    </template>
+    <v-card class="mb-3">
+      <v-card-text>
+        <header>絞り込み条件</header>
+        <v-row 
+          dense
+          justify="start"
+        >
+          <v-checkbox 
+            v-for="tag in tags"
+            :key="tag.id"
+            v-model="query.selectedTags"
+            :label="tag.name"
+            :value="tag.id"
+            class="mr-5"
+            hide-details="auto"
+            @click.native="fetchUsers"
+          />
+        </v-row>
+        <v-row>
+          <v-col cols="12">
+            <v-text-field 
+              v-model="query.userName" 
+              label="UserName" 
+              @input="fetchUsers"
+            />
+          </v-col>
+        </v-row>
+      </v-card-text>
+    </v-card>
     <v-row dense>
       <v-col
-              v-for="user in users"
-              :key="user.id"
-              :cols="6"
-              :md="3"
+        v-for="user in users"
+        :key="user.id"
+        :cols="6"
+        :md="3"
       >
         <v-card>
           <v-img
-                  :src="user.avatar_url"
-                  class="white--text align-end"
-                  gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
-                  aspect-ratio="1"
+            :src="user.avatar_url"
+            class="white--text align-end"
+            gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
+            aspect-ratio="1"
           >
-            <template v-slot:placeholder>
+            <template #placeholder>
               <v-row
-                      class="fill-height ma-0"
-                      align="center"
-                      justify="center"
+                class="fill-height ma-0"
+                align="center"
+                justify="center"
               >
-                <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
+                <v-progress-circular 
+                  indeterminate 
+                  color="grey lighten-5"
+                />
               </v-row>
             </template>
-            <v-card-title v-text="user.name" @click="$router.push(`/users/${user.id}`)" style="cursor: pointer;"></v-card-title>
+            <v-card-title 
+              style="cursor: pointer;"
+              @click="$router.push(`/users/${user.id}`)" 
+              v-text="user.name"
+            />
           </v-img>
 
-          <v-card-text class="text--primary" style="min-height: 64px;">
+          <v-card-text 
+            class="text--primary" 
+            style="min-height: 64px;"
+          >
             <v-chip
-                    class="ma-1"
-                    color="orange"
-                    text-color="white"
-                    small
-                    v-for="tag in user.tags" :key="tag.name"
+              v-for="tag in user.tags"
+              :key="tag.name"
+              class="ma-1"
+              color="orange"
+              text-color="white"
+              small
             >
-              <v-icon left class="mr-0">mdi-music-accidental-sharp</v-icon>
-              {{tag.name}}
+              <v-icon 
+                left 
+                class="mr-0"
+              >
+                mdi-music-accidental-sharp
+              </v-icon>
+              {{ tag.name }}
             </v-chip>
           </v-card-text>
         </v-card>
@@ -71,66 +88,70 @@
     </v-row>
     <v-row>
       <v-col>
-    <v-spacer />
-    <template v-if="pagingMeta" class="mr-5">
-        <div class="text-center mr-5">
+        <v-sheet height="100" />
+        <template 
+          v-if="pagingMeta"
+          class="mr-5"
+        >
+          <div class="text-center mr-5">
             <v-pagination
-              color="indigo"
               v-model="pagingMeta.current_page"
+              color="indigo"
               :length="pagingMeta.total_pages"
               @input="paging"
-            ></v-pagination>
-        </div>
-    </template>
-    </v-col>
+            />
+          </div>
+        </template>
+        <v-sheet height="100" />
+      </v-col>
     </v-row>
   </v-container>
 </template>
 
 <script>
-  import axios from 'axios'
-  import qs from 'qs';
-  export default {
-      data() {
-          return {
-              users: [],
-              tags: [],
-              query: {
-                  selectedTags: [],
-                  userName: ''
-              },
-              pagingMeta: null,
-              currentPage: 1
-          }
+import axios from 'axios';
+import qs from 'qs';
+export default {
+  data() {
+    return {
+      users: [],
+      tags: [],
+      query: {
+        selectedTags: [],
+        userName: ''
       },
-      created() {
-          this.fetchUsers()
-          this.fetchTags()
-      },
-      methods: {
-          async fetchUsers() {
-              const searchParams = {
-                  q: {
-                      name: this.query.userName,
-                      tag_ids: this.query.selectedTags
-                  }
-              }
-              const pagingParams = { page: this.currentPage }
-              const params = { ...searchParams, ...pagingParams }
-              const paramsSerializer = (params) => qs.stringify(params, { arrayFormat: 'brackets' });
-              const res = await axios.get(`/api/users`, { params, paramsSerializer })
-              this.users = res.data.users
-              this.pagingMeta = res.data.meta
-          },
-          async fetchTags() {
-              const res = await axios.get(`/api/tags`)
-              this.tags = res.data.tags
-          },
-          paging(page) {
-              this.currentPage = page
-              this.fetchUsers()
-              this.$vuetify.goTo(0)
-          }
-      }
+      pagingMeta: null,
+      currentPage: 1
+    };
+  },
+  created() {
+    this.fetchUsers();
+    this.fetchTags();
+  },
+  methods: {
+    async fetchUsers() {
+      const searchParams = {
+        q: {
+          name: this.query.userName,
+          tag_ids: this.query.selectedTags
+        }
+      };
+      const pagingParams = { page: this.currentPage };
+      const params = { ...searchParams, ...pagingParams };
+      const paramsSerializer = (params) => qs.stringify(params, { arrayFormat: 'brackets' });
+      const res = await axios.get('/api/users', { params, paramsSerializer });
+      this.users = res.data.users;
+      this.pagingMeta = res.data.meta;
+    },
+    async fetchTags() {
+      const res = await axios.get('/api/tags');
+      this.tags = res.data.tags;
+    },
+    paging(page) {
+      this.currentPage = page;
+      this.fetchUsers();
+      this.$vuetify.goTo(0);
+    }
   }
+};
 </script>

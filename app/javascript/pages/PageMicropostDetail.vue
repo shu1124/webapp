@@ -210,20 +210,12 @@ export default {
       const res = await axios.get(`/api/microposts/${this.micropostId}/comments`);
       this.comments = res.data.comments;
     },
-    async createComment(micropostComment) {
-      const commentParams = {
-        comment: {
-          content: micropostComment
-        }
-      };
-      const res = await axios.post(`/api/microposts/${this.micropostId}/comments`, commentParams);
-      this.comments =[...[res.data.comment], ...this.comments];
-    },
     async upload() {
       let formData = new FormData();
       formData.append('content', this.content);
       await axios.post(`/api/microposts/${this.micropostId}/comments`, formData);
       this.resetForm();
+      this.fetchComment();
     },
     resetForm() {
       this.content = '';

@@ -29,6 +29,7 @@
         </v-row>
       </v-card-text>
     </v-card>
+    <v-sheet height="50" />
     <v-row>
       <v-col
         v-for="micropost in microposts"
@@ -85,16 +86,17 @@
           </v-card-text>
           <v-card-actions>
             <v-btn icon>
-              <like-button
+              <!-- <like-button
                 v-if="user" 
                 :user-id="micropost.user.id"
                 :micropost-id="micropost.id"
-              />
+              /> -->
             </v-btn>
           </v-card-actions>
         </v-card>
       </v-col>
     </v-row>
+    <v-sheet height="100" />
     <v-row>
       <v-col>
         <v-spacer />
@@ -112,17 +114,40 @@
           </div>
         </template>
       </v-col>
+      <v-sheet height="100" />
     </v-row>
+    <v-layout 
+      v-if="user" 
+      column
+      class="fab-container" 
+    >
+      <v-btn
+        class="ma-2"
+        outlined
+        large
+        fab
+        color="indigo"
+        @click="openEditMicropost"
+      >
+        <v-icon>mdi-pencil</v-icon>
+      </v-btn>
+      <micropost-post-modal 
+        ref="dialog"
+        @upload="uploadMicropost"
+      />
+    </v-layout>
   </v-container>
 </template>
 
 <script>
-import LikeButton from '@/components/LikeButton';
+// import LikeButton from '@/components/LikeButton';
+import MicropostPostModal from '@/components/MicropostPostModal';
 import axios from 'axios';
 import qs from 'qs';
 export default {
   components: {
-    LikeButton
+    MicropostPostModal
+    // LikeButton
   },
   data() {
     return {
@@ -178,7 +203,23 @@ export default {
       this.currentPage = page;
       this.fetchMicroposts();
       this.$vuetify.goTo(0);
-    }
+    },
+    openEditMicropost() {
+      this.$refs.dialog.open();
+    },
+    async uploadMicropost(formData) {
+      await axios.post('/api/microposts/', formData);
+      this.$refs.dialog.close();
+      this.fetchMicroposts();
+    },
   }
 };
 </script>
+
+<style>
+  .fab-container {
+    position: fixed;
+    bottom: 100px;
+    right: 100px;
+  }
+</style>
