@@ -10,7 +10,6 @@ import PageUsers from '@/pages/PageUsers';
 import PageMicropostLike from '@/pages/PageMicropostLike';
 
 const router = new VueRouter({
-  mode: 'history',
   routes: [
     { path: '/signup', component: PageUserRegister, name: 'user-register' },
     { path: '/login', component: PageUserLogin, name: 'user-login' },

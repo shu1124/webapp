@@ -1,7 +1,7 @@
 class User < ApplicationRecord
   has_secure_password
   validates :name, presence: true
-  validates :email, presence: true, uniqueness: true
+  validates :email, presence: true, uniqueness: true, format: {with: /[\w\-\._]+@[\w\-\._]+\.[A-Za-z]+/ }
   validates :password_digest, presence: true
 
   has_many :microposts, dependent: :destroy

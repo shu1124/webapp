@@ -1,6 +1,6 @@
 # ①アプリケーションについて
 ## URL
-URL:  https://self-mba.org/
+URL:  https://self-mba.org
 github: https://github.com/shu1124/webapp
 ## 概要
 - アプリケーション名:「SELF MBA」
@@ -29,7 +29,8 @@ github: https://github.com/shu1124/webapp
 ## 現状(2021/1/15現在)
 - いいね機能とフォロー機能はバグ発生のため停止中です(vue.js側でうまく表示できない)
 - 本番環境に関してはECSでのデプロイでエラー発生中のため,EC2で現在はデプロイしています。そのためCircleCIは自動テストのみです。
-- terraformのコードは「https://github.com/shu1124/webapp_terraform」に適宜追加しています。今の所コードは書いていますが、コードでの管理はしていません。
+- terraformのコードは「https://github.com/shu1124/webapp_terraform」
+に適宜追加しています。今の所コードは書いていますが、コードでの管理はしていません。
 
 
 # ③補足

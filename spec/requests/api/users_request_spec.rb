@@ -17,7 +17,6 @@ RSpec.describe 'Api::Users', type: :request do
         end)
       end
     end
-
     context 'ページングあり' do
       let!(:users) { create_list(:user, 25) }
       it 'ユーザーの一覧が取得できること' do
@@ -35,7 +34,7 @@ RSpec.describe 'Api::Users', type: :request do
 
   describe 'POST /api/users' do
     let(:user_params) do
-      { user: { name: 'dyson', email: 'dyson@example.com', password: '12345678', password_confirmation: '12345678' } }
+      { user: { name: 'test', email: 'test@example.com', password: '12345678', password_confirmation: '12345678' } }
     end
     it 'ユーザーが作成できること' do
       post api_users_path, params: user_params
@@ -43,13 +42,12 @@ RSpec.describe 'Api::Users', type: :request do
       json = JSON.parse(response.body)
       expect(json['user']).to include({
                                         'id' => be_present,
-                                        'name' => 'dyson',
-                                        'email' => 'dyson@example.com'
+                                        'name' => 'test',
+                                        'email' => 'test@example.com'
                                       })
     end
-
     let(:invalid_user_params) do
-      { user: { name: 'dyson', email: 'dyson@example.com', password: '12345678', password_confirmation: '1234' } }
+      { user: { name: 'test', email: 'test@example.com', password: '12345678', password_confirmation: '1234' } }
     end
     it 'ユーザーの作成に失敗すること' do
       post api_users_path, params: invalid_user_params
@@ -58,7 +56,7 @@ RSpec.describe 'Api::Users', type: :request do
       expect(json['error']).to be_present
     end
   end
-
+  
   describe 'GET /api/users/:id' do
     let(:user) { create(:user) }
     it 'ユーザーの詳細が取得できること' do
