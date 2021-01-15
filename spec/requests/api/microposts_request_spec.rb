@@ -29,7 +29,7 @@ RSpec.describe 'Api::Microposts', type: :request do
         expect(response).to have_http_status(200)
         json = JSON.parse(response.body)
         expect(json['meta']).to include(
-          'total_pages' => 3,
+          'total_pages' => 2,
           'total_count' => 21,
           'current_page' => 1
         )
