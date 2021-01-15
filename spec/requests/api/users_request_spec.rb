@@ -56,7 +56,7 @@ RSpec.describe 'Api::Users', type: :request do
       expect(json['error']).to be_present
     end
   end
-  
+
   describe 'GET /api/users/:id' do
     let(:user) { create(:user) }
     it 'ユーザーの詳細が取得できること' do

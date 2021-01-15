@@ -19,9 +19,9 @@ RSpec.describe Micropost, type: :model do
       expect(@micropost.errors.full_messages).to include("Title can't be blank")
     end
     it 'titleが30文字以上の場合はエラー' do
-      @micropost.title = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      @micropost.title = 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
       @micropost.valid?
-      expect(@micropost.errors.full_messages).to include("Title is too long (maximum is 30 characters)")
+      expect(@micropost.errors.full_messages).to include('Title is too long (maximum is 30 characters)')
     end
     it 'timeがない場合はエラー' do
       @micropost.time = ''
