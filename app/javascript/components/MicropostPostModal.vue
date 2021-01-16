@@ -114,7 +114,7 @@ export default {
   },
   computed: {
     isValid() {
-      return this.content.length > 0 && this.content.length <= 1000;
+      return this.content.length > 0 && this.time.length > 0 && this.title.length > 0;
     }
   },
   methods: {
