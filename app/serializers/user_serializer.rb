@@ -1,5 +1,6 @@
 class UserSerializer < ActiveModel::Serializer
   attributes :id, :name, :email, :introduction, :avatar_url
+  has_many :microposts
   has_many :tags
   has_many :likes
   def avatar_url
