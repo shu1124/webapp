@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   namespace :api do
     resources :users, only: %i[index create show] do
       member do
-        get :following, :followers
+        get :following, :followers, :microposts
       end
     end
     resources :relationships, only: [:create, :destroy]
