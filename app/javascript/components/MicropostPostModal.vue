@@ -29,6 +29,7 @@
             >
               <v-text-field
                 v-model="title"
+                :rules="titleRules"
                 label="タイトル"
                 placeholder="タイトル"
                 outlined
@@ -41,6 +42,7 @@
             >
               <v-text-field
                 v-model="time"
+                :rules="timeRules"
                 label="勉強した時間"
                 placeholder="勉強した時間"
                 outlined
@@ -50,6 +52,7 @@
           </v-row>
           <v-textarea
             v-model="content"
+            :rules="contentRules"
             outlined
             color="indigo"
             name="input-7-4"
@@ -94,12 +97,24 @@ export default {
       content: '',
       title: '',
       time: '',
-      imageFile: null
+      imageFile: null,
+      titleRules: [
+        v => !!v || 'Title is required',
+        v => (v && v.length <= 30) || 'Title must be less than 30 characters',
+      ],
+      timeRules: [
+        v => !!v || 'Time is required',
+        v => /[0-9]+/.test(v) || 'Time must be valid',
+      ],
+      contentRules: [
+        v => !!v || 'Content is required',
+        v => (v && v.length <= 30) || 'Time must be valid',
+      ],
     };
   },
   computed: {
     isValid() {
-      return this.content.length > 0 && this.content.length <= 1000;
+      return this.content.length > 0 && this.time.length > 0 && this.title.length > 0;
     }
   },
   methods: {
