@@ -136,6 +136,7 @@ export default {
         formData.append('image', this.imageFile);
       }
       this.$emit('upload', formData);
+      this.close();
       this.resetForm();
     },
     resetForm() {

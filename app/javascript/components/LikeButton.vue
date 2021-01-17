@@ -34,26 +34,43 @@ export default {
   props: ['userId', 'micropostId'],
   data() {
     return {
-      likeList: []
+      likeList: [],
+      likes: [],
+      likeId: '',
+      total: []
     };
   },
   computed: {
-    count() {
-      return this.likeList.length;
-    },
     isLiked() {
-      if (this.likeList.length === 0) { return false; }
-      return Boolean(this.findLikeId());
+      if (this.likes === 0) { return false; } 
+      else {return true; }
+    },
+    count() {
+      return this.total;
     }
   },
   created() {
     this.fetchLikeByPostId().then(result => {
       this.likeList = result;
+      this.likes = result.likes.length;
+      if( this.likes === 1 ){
+        this.likeId = result.likes[0].id;
+        console.log(this.likeId);
+      }
+    });
+    this.fetchTotalLike().then(result =>{
+      this.total = result.likes.length;
     });
   },
   methods: {
     async fetchLikeByPostId() {
       const res = await axios.get(`/api/likes/?micropost_id=${this.micropostId}`);
+      // eslint-disable-next-line no-undef
+      if (res.status !== 200) { process.exit(); }
+      return res.data;
+    },
+    async fetchTotalLike() {
+      const res = await axios.get(`/api/likes/count/?micropost_id=${this.micropostId}`);
       // eslint-disable-next-line no-undef
       if (res.status !== 200) { process.exit(); }
       return res.data;
@@ -64,33 +81,27 @@ export default {
       if (res.status !== 201) { process.exit(); }
       this.fetchLikeByPostId().then(result => {
         this.likeList = result;
+        this.likes = result.likes.length;
+        if( this.likes === 1 ){
+          this.likeId = result.likes[0].id;
+          console.log(this.likeId);
+        }
+      });
+      this.fetchTotalLike().then(result =>{
+        this.total = result.likes.length;
       });
     },
-    async deleteLike () {
-      const likeId = this.findLikeId();
-      const res = await axios.delete(`/api/likes/${likeId}`);
+    async deleteLike() {
+      await axios.delete(`/api/likes/${this.likeId}`);
       // eslint-disable-next-line no-undef
-      if (res.status !== 200) { process.exit(); }
-      this.likeList = this.likeList.filter(n => n.id !== likeId);
-    },
-    async checkLike () {
-      const likeId = this.findLikeId();
-      const res = await axios.delete(`/api/likes/${likeId}`);
-      // eslint-disable-next-line no-undef
-      if (res.status !== 200) { process.exit(); }
-      this.likeList = this.likeList.filter(n => n.id !== likeId);
-    },
-    findLikeId () {
-      const like = this.likeList.find((like) => {
-        return (like.user_id === this.userId);
+      this.fetchLikeByPostId().then(result => {
+        this.likeList = result;
+        this.likes = result.likes.length;
       });
-      if (like) { return like.id; }
-    },
-    async fetchMicroposts() {
-      const res = await axios.get('/api/microposts/likes', { params: { page: this.currentPage } });
-      this.microposts = res.data.microposts;
-    },
+      this.fetchTotalLike().then(result =>{
+        this.total = result.likes.length;
+      });
+    }
   }
 };
 </script>
-
