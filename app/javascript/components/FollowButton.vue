@@ -1,77 +1,67 @@
 <template>
   <div>
-    <div>
-      <div v-if="following_check">
-        <v-btn 
-          color="primary"
-          depressed
-          @click="deleteFollow()"
-        >
-          フォロー中
-        </v-btn>
-      </div>
-      <div v-else>
-        <v-btn 
-          color="primary" 
-          depressed 
-          outlined 
-          @click="registerFollow()"
-        >
-          フォローする
-        </v-btn>
-      </div>
+    <div v-if="isLiked" @click="deleteLike()">
+      いいねを取り消す {{ count }}
+    </div>
+    <div v-else @click="registerLike()">
+      いいねする {{ count }}
     </div>
   </div>
 </template>
 
 <script>
+// axios と rails-ujsのメソッドインポート
 import axios from 'axios';
 import { csrfToken } from 'rails-ujs';
+// CSRFトークンの取得とリクエストヘッダへの設定をしてくれます
 axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken();
 
 export default {
-  // eslint-disable-next-line vue/require-prop-types
-  props: ['userId'],
+  // propsでrailsのviewからデータを受け取る
+  props: ['userId', 'postId'],
   data() {
     return {
-      followList: [],
-      following_check: ''
     };
   },
+  // 算出プロパティ ここではlikeListが変更される度に、count、isLiked が再構築される (watchで監視するようにしても良いかも)
   computed: {
-    // eslint-disable-next-line vue/return-in-computed-property
-    isFollow(){
-      if (this.followList.length === 0) { return false; }
+    // いいね数を返す
+    count() {
+      return this.likeList.length;
     },
-    currentUserId() {
-      return this.$store.getters['auth/currentUser'].id;
-    },
+    // ログインユーザが既にいいねしているかを判定する
+    isLiked() {
+      if (this.likeList.length === 0) { return false; }
+      return Boolean(this.findLikeId());
+    }
   },
-  created() {
-    this.fetchFollowing();
+  // Vueインスタンスの作成・初期化直後に実行される
+  created: function() {
+    this.fetchLikeByPostId().then(result => {
+      this.likeList = result;
+    });
   },
   methods: {
-    async fetchFollowing() {
-      const res = await axios.get(`/api/users/${this.currentUserId}/following`);
-      if (res.data.users.id) { 
-        this.following_check = true;
-      } else {
-        this.following_check =false;
-      }
+    // rails側のindexアクションにリクエストするメソッド
+    fetchLikeByPostId: async function() {
+      const res = await axios.get(`/api/likes/?post_id=${this.postId}`);
+      return res.data;
     },
-    async registerFollow() {
-      await axios.post('/api/relationships/', { following_id: this.userId });
-      this.following_check = true;
-    },
-    async deleteFollow() {
-      await axios.delete(`/api/relationships/${this.userId}`, {  user_id: this.userId });
-      this.following_check =false;
-    },
-    findFollowId () {
-      const follow = this.followList.find((following) => {
-        return (following.user_id === this.userId);
+    // rails側のcreateアクションにリクエストするメソッド
+    registerLike: async function() {
+      this.fetchLikeByPostId().then(result => {
+        this.likeList = result;
       });
-      if (follow) { return follow.id; }
+    },
+    // rails側のdestroyアクションにリクエストするメソッド
+    deleteLike: async function() {
+    },
+    // ログインユーザがいいねしているlikeモデルのidを返す
+    findLikeId: function() {
+      const like = this.likeList.find((like) => {
+        return (like.user_id === this.userId);
+      });
+      if (like) { return like.id; }
     }
   }
 };

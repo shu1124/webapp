@@ -1,7 +1,6 @@
 class Api::LikesController < ApplicationController
-  before_action :authenticate
   def index
-    render json: Like.filter_by_post(params[:micropost_id]).select(:id, :user_id, :micropost_id)
+    render json: Like.where(user_id: current_user.id, micropost_id: params[:micropost_id])
   end
 
   def create
@@ -17,6 +16,6 @@ class Api::LikesController < ApplicationController
   private
 
   def likes_params
-    params.require(:like).permit(:micropost_id)
+    params.require(:like).permit(:micropost_id).merge(user_id: current_user.id)
   end
 end

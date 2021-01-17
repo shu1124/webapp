@@ -86,11 +86,11 @@
           </v-card-text>
           <v-card-actions>
             <v-btn icon>
-              <!-- <like-button
+              <like-button
                 v-if="user" 
-                :user-id="micropost.user.id"
+                :user-id="userId"
                 :micropost-id="micropost.id"
-              /> -->
+              />
             </v-btn>
           </v-card-actions>
         </v-card>
@@ -140,14 +140,14 @@
 </template>
 
 <script>
-// import LikeButton from '@/components/LikeButton';
+import LikeButton from '@/components/LikeButton';
 import MicropostPostModal from '@/components/MicropostPostModal';
 import axios from 'axios';
 import qs from 'qs';
 export default {
   components: {
-    MicropostPostModal
-    // LikeButton
+    MicropostPostModal,
+    LikeButton
   },
   data() {
     return {
@@ -211,6 +211,7 @@ export default {
       await axios.post('/api/microposts/', formData);
       this.$refs.dialog.close();
       this.fetchMicroposts();
+      this.$refs.form.reset();
     },
   }
 };
