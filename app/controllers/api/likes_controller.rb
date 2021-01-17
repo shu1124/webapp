@@ -13,6 +13,10 @@ class Api::LikesController < ApplicationController
     head :ok
   end
 
+  def count
+    render json: Like.where(micropost_id: params[:micropost_id])
+  end
+
   private
 
   def likes_params

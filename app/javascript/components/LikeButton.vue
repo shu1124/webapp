@@ -10,6 +10,7 @@
       > 
         <v-icon> mdi-heart </v-icon>
       </v-btn> 
+      {{ count }}
     </div>
     <div 
       v-else 
@@ -18,6 +19,7 @@
       <v-btn icon> 
         <v-icon>mdi-heart</v-icon>
       </v-btn>
+      {{ count }}
     </div>
   </div>
 </template>
@@ -33,14 +35,18 @@ export default {
   data() {
     return {
       likeList: [],
-      likes:[],
-      likeId: ''
+      likes: [],
+      likeId: '',
+      total: []
     };
   },
   computed: {
     isLiked() {
       if (this.likes === 0) { return false; } 
       else {return true; }
+    },
+    count() {
+      return this.total;
     }
   },
   created() {
@@ -52,10 +58,19 @@ export default {
         console.log(this.likeId);
       }
     });
+    this.fetchTotalLike().then(result =>{
+      this.total = result.likes.length;
+    });
   },
   methods: {
     async fetchLikeByPostId() {
       const res = await axios.get(`/api/likes/?micropost_id=${this.micropostId}`);
+      // eslint-disable-next-line no-undef
+      if (res.status !== 200) { process.exit(); }
+      return res.data;
+    },
+    async fetchTotalLike() {
+      const res = await axios.get(`/api/likes/count/?micropost_id=${this.micropostId}`);
       // eslint-disable-next-line no-undef
       if (res.status !== 200) { process.exit(); }
       return res.data;
@@ -72,6 +87,9 @@ export default {
           console.log(this.likeId);
         }
       });
+      this.fetchTotalLike().then(result =>{
+        this.total = result.likes.length;
+      });
     },
     async deleteLike() {
       await axios.delete(`/api/likes/${this.likeId}`);
@@ -79,6 +97,9 @@ export default {
       this.fetchLikeByPostId().then(result => {
         this.likeList = result;
         this.likes = result.likes.length;
+      });
+      this.fetchTotalLike().then(result =>{
+        this.total = result.likes.length;
       });
     }
   }

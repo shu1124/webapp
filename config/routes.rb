@@ -16,7 +16,11 @@ Rails.application.routes.draw do
         get :likes
       end
     end
-    resources :likes, only: [:index, :create, :destroy]
+    resources :likes, only: [:index, :create, :destroy] do
+      collection do
+        get :count
+      end
+    end
     resources :tags, only: %i[index]
     resources :genres, only: %i[index]
     namespace :me do
