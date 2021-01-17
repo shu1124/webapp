@@ -26,8 +26,9 @@ github: https://github.com/shu1124/webapp
 - バックエンド: Ruby on Rails(api), rspec, rubocop
 - インフラ: AWS(EC2,ECR,ECR,VPC,ROUTE53,ACM,RDS), Docker, docker-compose, CircleCI, terraform(調整中)
 
-## 現状(2021/1/15現在)
+## 現状(2021/1/18現在)
 - いいね機能とフォロー機能はバグ発生のため停止中です(vue.js側でうまく表示できない)
+→1/18までにいいね機能修正済み
 - 本番環境に関してはECSでのデプロイでエラー発生中のため,EC2で現在はデプロイしています。そのためCircleCIは自動テストのみです。
 - terraformのコードは「https://github.com/shu1124/webapp_terraform」
 に適宜追加しています。今の所コードは書いていますが、コードでの管理はしていません。
