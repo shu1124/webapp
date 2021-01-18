@@ -62,11 +62,7 @@
                 プロフィール編集
               </v-btn>
               <follow-button 
-                v-else 
-                class="ma-2" 
-                tile 
-                outlined 
-                color="success" 
+                v-else-if="isLogin"   
                 :user-id="user.id"
               />
             </v-card-title>
@@ -209,7 +205,7 @@ export default {
       return this.$store.getters['auth/currentUser'] && this.userId == this.$store.getters['auth/currentUser'].id;
     },
     isLogin() {
-      return this.$store.getters['auth/currentUser'] && this.userId ==! this.$store.getters['auth/currentUser'].id;
+      return this.$store.getters['auth/currentUser'] && this.userId !== this.$store.getters['auth/currentUser'].id;
     },
     userId() {
       return this.$route.params.id || this.$store.getters['auth/currentUser'].id;

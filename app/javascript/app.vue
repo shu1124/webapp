@@ -7,7 +7,7 @@
       <v-list v-if="$store.getters['auth/currentUser']">
         <v-list-item class="grow">
           <v-list-item-avatar 
-            v-if="user" 
+            v-if="user"
             color="grey darken-3"
           >
             <v-img
@@ -16,22 +16,27 @@
             />
           </v-list-item-avatar>
 
-          <v-list-item-content>
+          <v-list-item-content v-if="user">
             <v-list-item-title>
               <div>
                 <v-list-item-subtitle>follow</v-list-item-subtitle>
-                <v-list-item-title class="title">
-                  (調整中)
+                <v-list-item-title class="title" @click="$router.push('/follow')">
+                  <follow-count
+                    :user-id="user.id"
+                    @click="$router.push('/follow')"
+                  />
                 </v-list-item-title>
               </div>
             </v-list-item-title>
           </v-list-item-content>
-          <v-list-item-content>
+          <v-list-item-content v-if="user">
             <v-list-item-title>
               <div>
                 <v-list-item-subtitle>follower</v-list-item-subtitle>
-                <v-list-item-title class="title">
-                  (調整中)
+                <v-list-item-title class="title" @click="$router.push('/follower')">
+                  <follower-count
+                    :user-id="user.id"
+                  />
                 </v-list-item-title>
               </div>
             </v-list-item-title>
@@ -165,7 +170,13 @@
 </template>
 
 <script>
+import FollowCount from '@/components/FollowCount';
+import FollowerCount from '@/components/FollowerCount';
 export default {
+  components: {
+    FollowCount,
+    FollowerCount
+  },
   props: {
     // eslint-disable-next-line vue/require-default-prop
     source: String,
@@ -173,6 +184,7 @@ export default {
   data: () => ({
     drawer: null,
     targetUser: null,
+    following: []
   }),
   computed: {
     isMe() {
