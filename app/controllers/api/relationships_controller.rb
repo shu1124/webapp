@@ -2,7 +2,7 @@ class Api::RelationshipsController < ApplicationController
   before_action :authenticate
 
   def index
-    render json: Relationship.where(following_id: params[:user_id], follower_id:current_user.id)
+    render json: Relationship.where(following_id: params[:user_id], follower_id: current_user.id)
   end
 
   def create
