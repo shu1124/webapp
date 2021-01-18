@@ -6,7 +6,7 @@ Rails.application.routes.draw do
         get :following, :followers
       end
     end
-    resources :relationships, only: [:create, :destroy]
+    resources :relationships, only: [:index, :create, :destroy]
     resource :session, only: %i[create destroy] do
       post "guest_login", on: :collection
     end
