@@ -21,7 +21,9 @@
               <div>
                 <v-list-item-subtitle>follow</v-list-item-subtitle>
                 <v-list-item-title class="title">
-                  (調整中)
+                  <follow-count 
+                    :user-id="user.id"
+                  />
                 </v-list-item-title>
               </div>
             </v-list-item-title>
@@ -31,7 +33,9 @@
               <div>
                 <v-list-item-subtitle>follower</v-list-item-subtitle>
                 <v-list-item-title class="title">
-                  (調整中)
+                  <follower-count
+                    :user-id="user.id"
+                  />
                 </v-list-item-title>
               </div>
             </v-list-item-title>
@@ -165,7 +169,13 @@
 </template>
 
 <script>
+import FollowCount from '@/components/FollowCount';
+import FollowerCount from '@/components/FollowerCount';
 export default {
+  components: {
+    FollowCount,
+    FollowerCount
+  },
   props: {
     // eslint-disable-next-line vue/require-default-prop
     source: String,
@@ -173,6 +183,7 @@ export default {
   data: () => ({
     drawer: null,
     targetUser: null,
+    following: []
   }),
   computed: {
     isMe() {
