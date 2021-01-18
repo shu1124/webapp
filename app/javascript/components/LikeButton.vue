@@ -55,7 +55,6 @@ export default {
       this.likes = result.likes.length;
       if( this.likes === 1 ){
         this.likeId = result.likes[0].id;
-        console.log(this.likeId);
       }
     });
     this.fetchTotalLike().then(result =>{
@@ -84,7 +83,6 @@ export default {
         this.likes = result.likes.length;
         if( this.likes === 1 ){
           this.likeId = result.likes[0].id;
-          console.log(this.likeId);
         }
       });
       this.fetchTotalLike().then(result =>{

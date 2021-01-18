@@ -7,7 +7,7 @@
       <v-list v-if="$store.getters['auth/currentUser']">
         <v-list-item class="grow">
           <v-list-item-avatar 
-            v-if="user" 
+            v-if="user"
             color="grey darken-3"
           >
             <v-img
@@ -16,23 +16,24 @@
             />
           </v-list-item-avatar>
 
-          <v-list-item-content>
+          <v-list-item-content v-if="user">
             <v-list-item-title>
               <div>
                 <v-list-item-subtitle>follow</v-list-item-subtitle>
-                <v-list-item-title class="title">
-                  <follow-count 
+                <v-list-item-title class="title" @click="$router.push('/follow')">
+                  <follow-count
                     :user-id="user.id"
+                    @click="$router.push('/follow')"
                   />
                 </v-list-item-title>
               </div>
             </v-list-item-title>
           </v-list-item-content>
-          <v-list-item-content>
+          <v-list-item-content v-if="user">
             <v-list-item-title>
               <div>
                 <v-list-item-subtitle>follower</v-list-item-subtitle>
-                <v-list-item-title class="title">
+                <v-list-item-title class="title" @click="$router.push('/follower')">
                   <follower-count
                     :user-id="user.id"
                   />

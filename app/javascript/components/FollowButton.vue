@@ -7,12 +7,12 @@
       <v-btn 
         class="ma-2" 
         tile 
-        color="success"
+        color="indigo"
       >
         <v-icon 
           left
         >
-          mdi-pencil
+          mdi-plus
         </v-icon> 
         フォローを解除する
       </v-btn>
@@ -25,12 +25,12 @@
         class="ma-2" 
         tile 
         outlined 
-        color="success"
+        color="indigo"
       >
         <v-icon 
           left
         >
-          mdi-pencil
+          mdi-plus
         </v-icon> 
         フォローする
       </v-btn>

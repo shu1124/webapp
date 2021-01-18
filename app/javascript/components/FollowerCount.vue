@@ -1,6 +1,12 @@
 <template>
   <div>
-    {{ count }}
+    <v-btn
+      :disabled="loading"
+      color="black"
+      plain
+    >
+      {{ count }}
+    </v-btn>
   </div>
 </template>
 
@@ -14,7 +20,8 @@ export default {
   props: ['userId'],
   data() {
     return {
-      total: []
+      total: [],
+      loading: false
     };
   },
   computed: {
@@ -33,7 +40,12 @@ export default {
       // eslint-disable-next-line no-undef
       if (res.status !== 200) { process.exit(); }
       return res.data;
-    }
+    },
+    async remove () {
+      this.loading = true;
+      await new Promise(resolve => setTimeout(resolve, 3000));
+      this.loading = false;
+    },
   }
 };
 </script>
