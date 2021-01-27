@@ -22,3 +22,5 @@ RUN bundle install
 ADD . /webapp
 
 RUN mkdir -p tmp/sockets
+
+EXPOSE 3000

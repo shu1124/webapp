@@ -3,14 +3,16 @@
     <div 
       v-if="isFollowed"
       @click="deleteFollow()"
+      text-color="white"
     >
       <v-btn 
         class="ma-2" 
         tile 
-        color="indigo"
+        text-color="white"
       >
         <v-icon 
           left
+          text-color="white"
         >
           mdi-plus
         </v-icon> 
