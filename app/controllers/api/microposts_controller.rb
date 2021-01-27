@@ -45,7 +45,7 @@ class Api::MicropostsController < ApplicationController
   end
 
   def search_params
-    params[:q]&.permit(:name, genre_ids: [])
+    params[:q]&.permit(:title, genre_ids: [])
   end
 
   def genre_names

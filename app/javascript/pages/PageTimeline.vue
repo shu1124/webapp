@@ -2,7 +2,7 @@
   <v-container>
     <v-card class="mb-3">
       <v-card-text>
-        <header>絞り込み条件</header>
+        <header>ジャンルタグで絞り込み</header>
         <v-row 
           dense 
           justify="start"
@@ -21,8 +21,8 @@
         <v-row>
           <v-col cols="12">
             <v-text-field 
-              v-model="query.micropostGenre" 
-              label="Genre" 
+              v-model="query.micropostTitle" 
+              label="タイトルで検索" 
               @input="fetchMicroposts"
             />
           </v-col>
@@ -85,13 +85,11 @@
             </v-chip>
           </v-card-text>
           <v-card-actions>
-            <v-btn icon>
-              <like-button
-                v-if="user" 
-                :user-id="userId"
-                :micropost-id="micropost.id"
-              />
-            </v-btn>
+            <like-button
+              v-if="user" 
+              :user-id="userId"
+              :micropost-id="micropost.id"
+            />
           </v-card-actions>
         </v-card>
       </v-col>
@@ -155,7 +153,7 @@ export default {
       genres: [],
       query: {
         selectedGenres: [],
-        micropostGenre: ''
+        micropostTitle: ''
       },
       pagingMeta: null,
       currentPage: 1
@@ -184,7 +182,7 @@ export default {
     async fetchMicroposts() {
       const searchParams = {
         q: {
-          name: this.query.micropostGenre,
+          title: this.query.micropostTitle,
           genre_ids: this.query.selectedGenres
         }
       };

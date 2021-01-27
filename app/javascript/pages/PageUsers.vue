@@ -2,7 +2,7 @@
   <v-container>
     <v-card class="mb-3">
       <v-card-text>
-        <header>絞り込み条件</header>
+        <header>ユーザータグで絞り込み</header>
         <v-row 
           dense
           justify="start"
@@ -22,7 +22,7 @@
           <v-col cols="12">
             <v-text-field 
               v-model="query.userName" 
-              label="UserName" 
+              label="ユーザー名で検索" 
               @input="fetchUsers"
             />
           </v-col>
