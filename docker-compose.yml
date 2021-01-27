@@ -11,6 +11,8 @@ services:
       - public-data:/webapp/public
       - tmp-data:/webapp/tmp
       - log-data:/webapp/log
+    ports:
+      - 3000:3000
     depends_on:
       - db
   db:

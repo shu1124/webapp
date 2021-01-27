@@ -4,7 +4,7 @@
       class="text-center"
     >
       <v-col>
-        <h1>フォローされたユーザー一覧</h1>
+        <h1>フォローしたユーザー一覧</h1>
       </v-col>
     </v-row>
     <v-sheet height="50" />
