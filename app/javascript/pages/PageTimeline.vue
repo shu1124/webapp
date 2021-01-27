@@ -85,13 +85,11 @@
             </v-chip>
           </v-card-text>
           <v-card-actions>
-            <v-btn icon>
-              <like-button
-                v-if="user" 
-                :user-id="userId"
-                :micropost-id="micropost.id"
-              />
-            </v-btn>
+            <like-button
+              v-if="user" 
+              :user-id="userId"
+              :micropost-id="micropost.id"
+            />
           </v-card-actions>
         </v-card>
       </v-col>
