@@ -35,7 +35,14 @@ github: https://github.com/shu1124/webapp
 <br>
 <br>
 
-# ③補足
+# ③動作gif
+## CRUD機能
+<img width="500" alt="post" src="https://user-images.githubusercontent.com/64460231/106406826-e1634100-647d-11eb-9ab1-77144085e5d9.gif">
+<img width="500" alt="post" src="https://user-images.githubusercontent.com/64460231/106407109-8847dd00-647e-11eb-9039-93ec961ffb67.gif">
+
+<br>
+<br>
+# ④補足
 ## データベース構成
 ![database](https://user-images.githubusercontent.com/64460231/104606763-7109a100-56c3-11eb-8041-868bc221a0c1.png)
 ## インフラ構成図
