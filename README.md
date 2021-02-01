@@ -33,9 +33,14 @@ github: https://github.com/shu1124/webapp
 に適宜追加しています。今の所コードは書いていますが、コードでの管理はしていません。
 
 <br>
+
+# ③アプリケーション動作に関して
+https://qiita.com/shu1124/items/a83259d87ce0dfe9138f
+にまとめました。
+
 <br>
 
-# ③補足
+# ④補足
 ## データベース構成
 ![database](https://user-images.githubusercontent.com/64460231/104606763-7109a100-56c3-11eb-8041-868bc221a0c1.png)
 ## インフラ構成図
